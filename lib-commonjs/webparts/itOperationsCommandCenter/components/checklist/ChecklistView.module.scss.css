@@ -1,0 +1,155 @@
+.page {
+  padding: 24px;
+  background: #f6f8fb;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.error {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.success {
+  background: #dcfce7;
+  color: #166534;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.progressCard {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 15px;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.progressPercent {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.progressTrack {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  background: #2563eb;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.startButton {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 6px;
+}
+
+.listCard {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.emptyState {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.itemNumber {
+  width: 30px;
+  font-weight: 700;
+}
+
+.checkboxArea {
+  display: flex;
+  align-items: center;
+}
+
+.itemContent {
+  flex: 1;
+}
+
+.itemStatus {
+  font-size: 12px;
+}
+
+.completedBadge {
+  background: #dcfce7;
+  color: #166534;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.naBadge {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.completeButton {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.naButton {
+  background: #6b7280;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.completedInfo {
+  color: #166534;
+  font-size: 12px;
+}
+
+.itemDone {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+/*# sourceMappingURL=ChecklistView.module.scss.css.map */

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "it-operations-command-center-client-side-solution",
+    "id": "691aed9a-fa65-4f9b-a014-9f23f21865a9",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.23.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "IT Operations Command Center description"
+      },
+      "longDescription": {
+        "default": "IT Operations Command Center description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "it-operations-command-center Feature",
+        "description": "The feature that activates elements of the it-operations-command-center solution.",
+        "id": "34b44305-f04d-4764-bcfa-8eaa0a56c404",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/it-operations-command-center.sppkg"
+  }
+}

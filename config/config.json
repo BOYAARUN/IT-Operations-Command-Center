@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "it-operations-command-center-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/itOperationsCommandCenter/ItOperationsCommandCenterWebPart.js",
+          "manifest": "./src/webparts/itOperationsCommandCenter/ItOperationsCommandCenterWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ItOperationsCommandCenterWebPartStrings": "lib/webparts/itOperationsCommandCenter/loc/{locale}.js"
+  }
+}

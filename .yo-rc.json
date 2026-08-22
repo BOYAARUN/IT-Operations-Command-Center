@@ -1,0 +1,19 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "useGulp": false,
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.23.2",
+    "sdksVersions": {},
+    "version": "1.23.2",
+    "libraryName": "it-operations-command-center",
+    "libraryId": "691aed9a-fa65-4f9b-a014-9f23f21865a9",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "IT Operations Command Center",
+    "solutionShortDescription": "IT Operations Command Center description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
