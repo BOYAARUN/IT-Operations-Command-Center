@@ -1,0 +1,82 @@
+.page {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.header span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f8fafc;
+  padding: 14px;
+  text-align: center;
+  font-size: 13px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover {
+  background: #eff6ff;
+}
+
+.clientName {
+  text-align: left;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.count {
+  display: inline-flex;
+  min-width: 35px;
+  height: 35px;
+  align-items: center;
+  justify-content: center;
+  background: #2563eb;
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.loading,
+.error,
+.empty {
+  padding: 40px;
+  text-align: center;
+}
+
+.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+/*# sourceMappingURL=LicenseMatrixView.module.scss.css.map */
