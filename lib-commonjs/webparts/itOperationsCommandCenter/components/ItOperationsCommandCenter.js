@@ -9,6 +9,9 @@ var NewJoinersView_1 = tslib_1.__importDefault(require("./screens/NewJoinersView
 var RequestDetailsView_1 = tslib_1.__importDefault(require("./screens/RequestDetailsView"));
 var VendorActionsView_1 = tslib_1.__importDefault(require("./vendor/VendorActionsView"));
 var AssetsView_1 = tslib_1.__importDefault(require("./assets/AssetsView"));
+var LicenseMatrixView_1 = tslib_1.__importDefault(require("./licenses/LicenseMatrixView"));
+var ClientLicenseUsers_1 = tslib_1.__importDefault(require("./licenses/ClientLicenseUsers"));
+var NewLicenseAllocation_1 = tslib_1.__importDefault(require("./licenses/NewLicenseAllocation"));
 var ItOperationsCommandCenter = /** @class */ (function (_super) {
     tslib_1.__extends(ItOperationsCommandCenter, _super);
     function ItOperationsCommandCenter() {
@@ -58,6 +61,26 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
         _this._openAssets = function () {
             _this.setState({
                 view: 'assets',
+                error: ''
+            });
+        };
+        _this._openLicenses = function () {
+            _this.setState({
+                view: 'licenses',
+                selectedClient: undefined,
+                error: ''
+            });
+        };
+        _this._openClientLicenses = function (client) {
+            _this.setState({
+                view: 'clientLicenses',
+                selectedClient: client,
+                error: ''
+            });
+        };
+        _this._openNewLicenseAllocation = function () {
+            _this.setState({
+                view: 'newLicenseAllocation',
                 error: ''
             });
         };
@@ -415,6 +438,32 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
                     .spHttpClientConfiguration, webAbsoluteUrl: this.props.webAbsoluteUrl, onBack: this._backToDashboard, onDashboard: this._goDashboard }));
         }
         if (this.state.view ===
+            'licenses') {
+            return (React.createElement(LicenseMatrixView_1.default, { serviceContext: {
+                    spHttpClient: this.props.spHttpClient,
+                    spHttpClientConfiguration: this.props.spHttpClientConfiguration,
+                    webAbsoluteUrl: this.props.webAbsoluteUrl
+                }, onClientSelect: this._openClientLicenses }));
+        }
+        if (this.state.view ===
+            'clientLicenses'
+            &&
+                this.state.selectedClient) {
+            return (React.createElement(ClientLicenseUsers_1.default, { serviceContext: {
+                    spHttpClient: this.props.spHttpClient,
+                    spHttpClientConfiguration: this.props.spHttpClientConfiguration,
+                    webAbsoluteUrl: this.props.webAbsoluteUrl
+                }, clientName: this.state.selectedClient, onBack: this._openLicenses, onNewAllocation: this._openNewLicenseAllocation }));
+        }
+        if (this.state.view ===
+            'newLicenseAllocation') {
+            return (React.createElement(NewLicenseAllocation_1.default, { serviceContext: {
+                    spHttpClient: this.props.spHttpClient,
+                    spHttpClientConfiguration: this.props.spHttpClientConfiguration,
+                    webAbsoluteUrl: this.props.webAbsoluteUrl
+                }, clientName: this.state.selectedClient, onCancel: this._openLicenses, onSaved: this._openLicenses }));
+        }
+        if (this.state.view ===
             'vendorActions') {
             return (React.createElement(VendorActionsView_1.default, { requests: this._getVendorActionRequests(), onBack: this._backToDashboard, onDashboard: this._goDashboard, onMarkSent: this._markVendorRequestsSent }));
         }
@@ -479,7 +528,7 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
                     React.createElement("button", { className: ItOperationsCommandCenter_module_scss_1.default.navItem },
                         React.createElement("span", { className: ItOperationsCommandCenter_module_scss_1.default.navIcon }, "\u21B6"),
                         "Returned Assets"),
-                    React.createElement("button", { className: ItOperationsCommandCenter_module_scss_1.default.navItem },
+                    React.createElement("button", { className: ItOperationsCommandCenter_module_scss_1.default.navItem, onClick: this._openLicenses },
                         React.createElement("span", { className: ItOperationsCommandCenter_module_scss_1.default.navIcon }, "\u25C8"),
                         "Licenses"),
                     React.createElement("button", { className: ItOperationsCommandCenter_module_scss_1.default.navItem },

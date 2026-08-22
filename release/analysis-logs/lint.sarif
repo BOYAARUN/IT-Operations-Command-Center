@@ -93,17 +93,7 @@
         },
         {
           "location": {
-            "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx"
-          }
-        },
-        {
-          "location": {
             "uri": "src/webparts/itOperationsCommandCenter/services/ISharePointService.ts"
-          }
-        },
-        {
-          "location": {
-            "uri": "src/webparts/itOperationsCommandCenter/services/AssetService.ts"
           }
         },
         {
@@ -113,7 +103,7 @@
         },
         {
           "location": {
-            "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx"
+            "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx"
           }
         },
         {
@@ -123,12 +113,22 @@
         },
         {
           "location": {
-            "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx"
+            "uri": "src/webparts/itOperationsCommandCenter/components/licenses/NewLicenseAllocation.tsx"
           }
         },
         {
           "location": {
-            "uri": "src/webparts/itOperationsCommandCenter/components/licenses/NewLicenseAllocation.tsx"
+            "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/webparts/itOperationsCommandCenter/services/AssetService.ts"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx"
           }
         },
         {
@@ -735,168 +735,6 @@
         {
           "level": "warning",
           "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
-                  "index": 4
-                },
-                "region": {
-                  "startLine": 115,
-                  "startColumn": 5,
-                  "endLine": 115,
-                  "endColumn": 35,
-                  "snippet": {
-                    "text": "void this._loadDashboardData()"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
-                  "index": 4
-                },
-                "region": {
-                  "startLine": 397,
-                  "startColumn": 5,
-                  "endLine": 397,
-                  "endColumn": 35,
-                  "snippet": {
-                    "text": "void this._loadDashboardData()"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
-                  "index": 4
-                },
-                "region": {
-                  "startLine": 478,
-                  "startColumn": 5,
-                  "endLine": 478,
-                  "endColumn": 35,
-                  "snippet": {
-                    "text": "void this._loadDashboardData()"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
-                  "index": 4
-                },
-                "region": {
-                  "startLine": 502,
-                  "startColumn": 5,
-                  "endLine": 502,
-                  "endColumn": 35,
-                  "snippet": {
-                    "text": "void this._loadDashboardData()"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
-                  "index": 4
-                },
-                "region": {
-                  "startLine": 513,
-                  "startColumn": 5,
-                  "endLine": 513,
-                  "endColumn": 35,
-                  "snippet": {
-                    "text": "void this._loadDashboardData()"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
-                  "index": 4
-                },
-                "region": {
-                  "startLine": 528,
-                  "startColumn": 5,
-                  "endLine": 528,
-                  "endColumn": 35,
-                  "snippet": {
-                    "text": "void this._loadDashboardData()"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
             "text": "Unexpected any. Specify a different type."
           },
           "locations": [
@@ -904,7 +742,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/services/ISharePointService.ts",
-                  "index": 5
+                  "index": 4
                 },
                 "region": {
                   "startLine": 5,
@@ -931,7 +769,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/services/ISharePointService.ts",
-                  "index": 5
+                  "index": 4
                 },
                 "region": {
                   "startLine": 11,
@@ -958,7 +796,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/services/ISharePointService.ts",
-                  "index": 5
+                  "index": 4
                 },
                 "region": {
                   "startLine": 39,
@@ -985,7 +823,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/services/ISharePointService.ts",
-                  "index": 5
+                  "index": 4
                 },
                 "region": {
                   "startLine": 67,
@@ -1011,62 +849,8 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/services/AssetService.ts",
-                  "index": 6
-                },
-                "region": {
-                  "startLine": 44,
-                  "startColumn": 52,
-                  "endLine": 44,
-                  "endColumn": 55,
-                  "snippet": {
-                    "text": "any"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "@typescript-eslint/no-explicit-any",
-          "ruleIndex": 0
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Unexpected any. Specify a different type."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/services/AssetService.ts",
-                  "index": 6
-                },
-                "region": {
-                  "startLine": 48,
-                  "startColumn": 64,
-                  "endLine": 48,
-                  "endColumn": 67,
-                  "snippet": {
-                    "text": "any"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "@typescript-eslint/no-explicit-any",
-          "ruleIndex": 0
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Unexpected any. Specify a different type."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/services/LicenseAllocationService.ts",
-                  "index": 7
+                  "index": 5
                 },
                 "region": {
                   "startLine": 99,
@@ -1093,7 +877,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/services/LicenseAllocationService.ts",
-                  "index": 7
+                  "index": 5
                 },
                 "region": {
                   "startLine": 117,
@@ -1119,278 +903,8 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
-                  "index": 8
-                },
-                "region": {
-                  "startLine": 13,
-                  "startColumn": 30,
-                  "endLine": 13,
-                  "endColumn": 33,
-                  "snippet": {
-                    "text": "any"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "@typescript-eslint/no-explicit-any",
-          "ruleIndex": 0
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
-                  "index": 8
-                },
-                "region": {
-                  "startLine": 82,
-                  "startColumn": 5,
-                  "endLine": 82,
-                  "endColumn": 28,
-                  "snippet": {
-                    "text": "void this._initialize()"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Unexpected any. Specify a different type."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
-                  "index": 8
-                },
-                "region": {
-                  "startLine": 368,
-                  "startColumn": 24,
-                  "endLine": 368,
-                  "endColumn": 27,
-                  "snippet": {
-                    "text": "any"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "@typescript-eslint/no-explicit-any",
-          "ruleIndex": 0
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
-                  "index": 8
-                },
-                "region": {
-                  "startLine": 718,
-                  "startColumn": 27,
-                  "endLine": 721,
-                  "endColumn": 28,
-                  "snippet": {
-                    "text": "void this._updateChecklistItem(\n                            item,\n                            'Completed'\n                          )"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
-                  "index": 8
-                },
-                "region": {
-                  "startLine": 774,
-                  "startColumn": 31,
-                  "endLine": 777,
-                  "endColumn": 32,
-                  "snippet": {
-                    "text": "void this._updateChecklistItem(\n                                item,\n                                'Completed'\n                              )"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Expected 'undefined' and instead saw 'void'."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
-                  "index": 8
-                },
-                "region": {
-                  "startLine": 794,
-                  "startColumn": 31,
-                  "endLine": 797,
-                  "endColumn": 32,
-                  "snippet": {
-                    "text": "void this._updateChecklistItem(\n                                item,\n                                'N/A'\n                              )"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "no-void",
-          "ruleIndex": 1
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Unexpected any. Specify a different type."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/licenses/ClientLicenseUsers.tsx",
-                  "index": 9
-                },
-                "region": {
-                  "startLine": 11,
-                  "startColumn": 18,
-                  "endLine": 11,
-                  "endColumn": 21,
-                  "snippet": {
-                    "text": "any"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "@typescript-eslint/no-explicit-any",
-          "ruleIndex": 0
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Missing return type on function."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/licenses/ClientLicenseUsers.tsx",
-                  "index": 9
-                },
-                "region": {
-                  "startLine": 64,
-                  "startColumn": 1,
-                  "endLine": 64,
-                  "endColumn": 31,
-                  "snippet": {
-                    "text": "public async componentDidMount"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "@typescript-eslint/explicit-function-return-type",
-          "ruleIndex": 2
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "'error' is defined but never used."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/licenses/ClientLicenseUsers.tsx",
-                  "index": 9
-                },
-                "region": {
-                  "startLine": 96,
-                  "startColumn": 7,
-                  "endLine": 96,
-                  "endColumn": 12,
-                  "snippet": {
-                    "text": "error"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "@typescript-eslint/no-unused-vars",
-          "ruleIndex": 6
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Missing return type on function."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/webparts/itOperationsCommandCenter/components/licenses/ClientLicenseUsers.tsx",
-                  "index": 9
-                },
-                "region": {
-                  "startLine": 139,
-                  "startColumn": 1,
-                  "endLine": 139,
-                  "endColumn": 14,
-                  "snippet": {
-                    "text": "public render"
-                  }
-                }
-              }
-            }
-          ],
-          "ruleId": "@typescript-eslint/explicit-function-return-type",
-          "ruleIndex": 2
-        },
-        {
-          "level": "warning",
-          "message": {
-            "text": "Unexpected any. Specify a different type."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx",
-                  "index": 10
+                  "index": 6
                 },
                 "region": {
                   "startLine": 9,
@@ -1417,7 +931,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx",
-                  "index": 10
+                  "index": 6
                 },
                 "region": {
                   "startLine": 46,
@@ -1444,7 +958,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx",
-                  "index": 10
+                  "index": 6
                 },
                 "region": {
                   "startLine": 54,
@@ -1471,7 +985,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx",
-                  "index": 10
+                  "index": 6
                 },
                 "region": {
                   "startLine": 100,
@@ -1498,7 +1012,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx",
-                  "index": 10
+                  "index": 6
                 },
                 "region": {
                   "startLine": 117,
@@ -1525,7 +1039,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx",
-                  "index": 10
+                  "index": 6
                 },
                 "region": {
                   "startLine": 135,
@@ -1552,7 +1066,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/LicenseMatrixView.tsx",
-                  "index": 10
+                  "index": 6
                 },
                 "region": {
                   "startLine": 147,
@@ -1578,8 +1092,116 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/licenses/ClientLicenseUsers.tsx",
+                  "index": 7
+                },
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 18,
+                  "endLine": 11,
+                  "endColumn": 21,
+                  "snippet": {
+                    "text": "any"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "ruleIndex": 0
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Missing return type on function."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/licenses/ClientLicenseUsers.tsx",
+                  "index": 7
+                },
+                "region": {
+                  "startLine": 64,
+                  "startColumn": 1,
+                  "endLine": 64,
+                  "endColumn": 31,
+                  "snippet": {
+                    "text": "public async componentDidMount"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "@typescript-eslint/explicit-function-return-type",
+          "ruleIndex": 2
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "'error' is defined but never used."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/licenses/ClientLicenseUsers.tsx",
+                  "index": 7
+                },
+                "region": {
+                  "startLine": 96,
+                  "startColumn": 7,
+                  "endLine": 96,
+                  "endColumn": 12,
+                  "snippet": {
+                    "text": "error"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "ruleIndex": 6
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Missing return type on function."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/licenses/ClientLicenseUsers.tsx",
+                  "index": 7
+                },
+                "region": {
+                  "startLine": 139,
+                  "startColumn": 1,
+                  "endLine": 139,
+                  "endColumn": 14,
+                  "snippet": {
+                    "text": "public render"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "@typescript-eslint/explicit-function-return-type",
+          "ruleIndex": 2
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Unexpected any. Specify a different type."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/NewLicenseAllocation.tsx",
-                  "index": 11
+                  "index": 8
                 },
                 "region": {
                   "startLine": 21,
@@ -1606,7 +1228,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/NewLicenseAllocation.tsx",
-                  "index": 11
+                  "index": 8
                 },
                 "region": {
                   "startLine": 122,
@@ -1633,7 +1255,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/NewLicenseAllocation.tsx",
-                  "index": 11
+                  "index": 8
                 },
                 "region": {
                   "startLine": 130,
@@ -1660,7 +1282,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/NewLicenseAllocation.tsx",
-                  "index": 11
+                  "index": 8
                 },
                 "region": {
                   "startLine": 156,
@@ -1687,7 +1309,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/NewLicenseAllocation.tsx",
-                  "index": 11
+                  "index": 8
                 },
                 "region": {
                   "startLine": 240,
@@ -1714,7 +1336,7 @@
               "physicalLocation": {
                 "artifactLocation": {
                   "uri": "src/webparts/itOperationsCommandCenter/components/licenses/NewLicenseAllocation.tsx",
-                  "index": 11
+                  "index": 8
                 },
                 "region": {
                   "startLine": 261,
@@ -1730,6 +1352,411 @@
           ],
           "ruleId": "@typescript-eslint/explicit-function-return-type",
           "ruleIndex": 2
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
+                  "index": 9
+                },
+                "region": {
+                  "startLine": 122,
+                  "startColumn": 5,
+                  "endLine": 122,
+                  "endColumn": 35,
+                  "snippet": {
+                    "text": "void this._loadDashboardData()"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
+                  "index": 9
+                },
+                "region": {
+                  "startLine": 404,
+                  "startColumn": 5,
+                  "endLine": 404,
+                  "endColumn": 35,
+                  "snippet": {
+                    "text": "void this._loadDashboardData()"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
+                  "index": 9
+                },
+                "region": {
+                  "startLine": 527,
+                  "startColumn": 5,
+                  "endLine": 527,
+                  "endColumn": 35,
+                  "snippet": {
+                    "text": "void this._loadDashboardData()"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
+                  "index": 9
+                },
+                "region": {
+                  "startLine": 551,
+                  "startColumn": 5,
+                  "endLine": 551,
+                  "endColumn": 35,
+                  "snippet": {
+                    "text": "void this._loadDashboardData()"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
+                  "index": 9
+                },
+                "region": {
+                  "startLine": 562,
+                  "startColumn": 5,
+                  "endLine": 562,
+                  "endColumn": 35,
+                  "snippet": {
+                    "text": "void this._loadDashboardData()"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
+                  "index": 9
+                },
+                "region": {
+                  "startLine": 577,
+                  "startColumn": 5,
+                  "endLine": 577,
+                  "endColumn": 35,
+                  "snippet": {
+                    "text": "void this._loadDashboardData()"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "File has too many lines (2008). Maximum allowed is 2000."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/ItOperationsCommandCenter.tsx",
+                  "index": 9
+                },
+                "region": {
+                  "startLine": 2001,
+                  "startColumn": 1,
+                  "endLine": 2008,
+                  "endColumn": 2,
+                  "snippet": {
+                    "text": "          </div>\n\n        </main>\n\n      </div>\n    );\n  }\n}"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "max-lines",
+          "ruleIndex": 5
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Unexpected any. Specify a different type."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/services/AssetService.ts",
+                  "index": 10
+                },
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 52,
+                  "endLine": 44,
+                  "endColumn": 55,
+                  "snippet": {
+                    "text": "any"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "ruleIndex": 0
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Unexpected any. Specify a different type."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/services/AssetService.ts",
+                  "index": 10
+                },
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 64,
+                  "endLine": 48,
+                  "endColumn": 67,
+                  "snippet": {
+                    "text": "any"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "ruleIndex": 0
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Unexpected any. Specify a different type."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
+                  "index": 11
+                },
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 30,
+                  "endLine": 13,
+                  "endColumn": 33,
+                  "snippet": {
+                    "text": "any"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "ruleIndex": 0
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
+                  "index": 11
+                },
+                "region": {
+                  "startLine": 82,
+                  "startColumn": 5,
+                  "endLine": 82,
+                  "endColumn": 28,
+                  "snippet": {
+                    "text": "void this._initialize()"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Unexpected any. Specify a different type."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
+                  "index": 11
+                },
+                "region": {
+                  "startLine": 368,
+                  "startColumn": 24,
+                  "endLine": 368,
+                  "endColumn": 27,
+                  "snippet": {
+                    "text": "any"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "ruleIndex": 0
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
+                  "index": 11
+                },
+                "region": {
+                  "startLine": 718,
+                  "startColumn": 27,
+                  "endLine": 721,
+                  "endColumn": 28,
+                  "snippet": {
+                    "text": "void this._updateChecklistItem(\n                            item,\n                            'Completed'\n                          )"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
+                  "index": 11
+                },
+                "region": {
+                  "startLine": 774,
+                  "startColumn": 31,
+                  "endLine": 777,
+                  "endColumn": 32,
+                  "snippet": {
+                    "text": "void this._updateChecklistItem(\n                                item,\n                                'Completed'\n                              )"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "Expected 'undefined' and instead saw 'void'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/webparts/itOperationsCommandCenter/components/checklist/ChecklistView.tsx",
+                  "index": 11
+                },
+                "region": {
+                  "startLine": 794,
+                  "startColumn": 31,
+                  "endLine": 797,
+                  "endColumn": 32,
+                  "snippet": {
+                    "text": "void this._updateChecklistItem(\n                                item,\n                                'N/A'\n                              )"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleId": "no-void",
+          "ruleIndex": 1
         },
         {
           "level": "warning",

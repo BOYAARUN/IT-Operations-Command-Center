@@ -16,7 +16,9 @@ import VendorActionsView, {
 } from './vendor/VendorActionsView';
 
 import AssetsView from './assets/AssetsView';
-
+import LicenseMatrixView from './licenses/LicenseMatrixView';
+import ClientLicenseUsers from './licenses/ClientLicenseUsers';
+import NewLicenseAllocation from './licenses/NewLicenseAllocation';
 interface IRequestItem {
   Id: number;
   Title: string;
@@ -80,7 +82,10 @@ type IView =
   | 'requestDetails'
   | 'editNewJoiner'
   | 'vendorActions'
-  | 'assets';
+  | 'assets'
+  | 'licenses'
+  | 'clientLicenses'
+  | 'newLicenseAllocation';
 
 interface IState {
   requests: IRequestItem[];
@@ -94,6 +99,8 @@ interface IState {
   view: IView;
 
   selectedRequestId?: number;
+
+  selectedClient?: string;
 }
 
 export default class ItOperationsCommandCenter
@@ -438,7 +445,49 @@ this._choiceValue(item.Status) !== 'Completed'
       error: ''
     });
   };
+  private _openLicenses = (): void => {
 
+  this.setState({
+
+    view: 'licenses',
+
+    selectedClient: undefined,
+
+    error: ''
+
+  });
+
+};
+
+
+private _openClientLicenses = (
+  client: string
+): void => {
+
+  this.setState({
+
+    view: 'clientLicenses',
+
+    selectedClient: client,
+
+    error: ''
+
+  });
+
+};
+
+
+private _openNewLicenseAllocation = (): void => {
+
+  this.setState({
+
+    view: 'newLicenseAllocation',
+
+    error: ''
+
+  });
+
+};
   private _openRequestDetails = (
     requestId: number
   ): void => {
@@ -692,7 +741,96 @@ item.VendorEmailSent !== true
         />
       );
     }
+    if (
+  this.state.view ===
+  'licenses'
+) {
 
+  return (
+
+    <LicenseMatrixView
+
+      serviceContext={{
+            spHttpClient: this.props.spHttpClient,
+            spHttpClientConfiguration: this.props.spHttpClientConfiguration,
+            webAbsoluteUrl: this.props.webAbsoluteUrl
+          }}
+
+      onClientSelect={
+        this._openClientLicenses
+      }
+
+    />
+
+  );
+
+}
+if (
+  this.state.view ===
+  'clientLicenses'
+  &&
+  this.state.selectedClient
+) {
+
+  return (
+
+    <ClientLicenseUsers
+
+      serviceContext={{
+            spHttpClient: this.props.spHttpClient,
+            spHttpClientConfiguration: this.props.spHttpClientConfiguration,
+            webAbsoluteUrl: this.props.webAbsoluteUrl
+          }}
+
+      clientName={
+        this.state.selectedClient
+      }
+
+      onBack={
+        this._openLicenses
+      }
+
+      onNewAllocation={
+        this._openNewLicenseAllocation
+      }
+
+    />
+
+  );
+
+}
+    if (
+  this.state.view ===
+  'newLicenseAllocation'
+) {
+
+  return (
+
+    <NewLicenseAllocation
+
+      serviceContext={{
+            spHttpClient: this.props.spHttpClient,
+            spHttpClientConfiguration: this.props.spHttpClientConfiguration,
+            webAbsoluteUrl: this.props.webAbsoluteUrl
+          }}
+
+      clientName={
+        this.state.selectedClient
+      }
+
+      onCancel={
+        this._openLicenses
+      }
+
+      onSaved={
+        this._openLicenses
+      }
+
+    />
+
+  );
+
+}
     if (
       this.state.view ===
       'vendorActions'
@@ -985,15 +1123,17 @@ item.VendorEmailSent !== true
             </button>
 
             <button
-              className={styles.navItem}
-            >
-              <span className={styles.navIcon}>
-                ◈
-              </span>
+  className={styles.navItem}
+  onClick={
+    this._openLicenses
+  }
+>
+  <span className={styles.navIcon}>
+    ◈
+  </span>
 
-              Licenses
-            </button>
-
+  Licenses
+</button>
             <button
               className={styles.navItem}
             >
