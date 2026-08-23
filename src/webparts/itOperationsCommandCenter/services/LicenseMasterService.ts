@@ -1,3 +1,4 @@
+import { SPHttpClient } from "@microsoft/sp-http";
 import {
   SharePointService,
   ISharePointServiceContext
@@ -6,17 +7,23 @@ import {
 
 export interface ILicenseMaster {
 
-  Id: number;
+  Id:number;
 
-  Title: string;
+  Title:string;
 
-  Vendor?: string;
+  Vendor?:string;
 
-  TotalLicense: number;
+  TotalLicense:number;
 
-  RenewalDate?: string;
+  RenewalDate?:string;
 
-  Active: boolean;
+  Active:boolean;
+
+  AddedBy?:string;
+
+  LastUpdatedBy?:string;
+
+  LastUpdatedDate?:string;
 
 }
 
@@ -26,8 +33,8 @@ export class LicenseMasterService extends SharePointService {
 
 
   constructor(
-    context: ISharePointServiceContext
-  ) {
+    context:ISharePointServiceContext
+  ){
 
     super(context);
 
@@ -35,8 +42,9 @@ export class LicenseMasterService extends SharePointService {
 
 
 
+
   public async getLicenses()
-    : Promise<ILicenseMaster[]> {
+  :Promise<ILicenseMaster[]> {
 
 
     return this.getItems<ILicenseMaster>(
@@ -49,8 +57,11 @@ export class LicenseMasterService extends SharePointService {
       Vendor,
       TotalLicense,
       RenewalDate,
-      Active
-      &$orderby=Title`
+      Active,
+      AddedBy,
+      LastUpdatedBy,
+      LastUpdatedDate
+      &$orderby=Title asc`
 
     );
 
@@ -61,30 +72,62 @@ export class LicenseMasterService extends SharePointService {
 
 
 
+
   public async createLicense(
-    data: ILicenseMaster
-  ): Promise<any> {
+    data:ILicenseMaster
+  ):Promise<any>{
+
+
+
+    const currentUser =
+    await this.getCurrentUser();
+
+
 
 
     const payload = {
 
-      Title: data.Title,
 
-      Vendor: data.Vendor || "",
+      Title:data.Title,
 
-      TotalLicense: Number(data.TotalLicense),
 
-      RenewalDate: data.RenewalDate || null,
+      Vendor:
+      data.Vendor || "",
 
-      Active: Boolean(data.Active)
+
+      TotalLicense:
+      Number(data.TotalLicense),
+
+
+      RenewalDate:
+      data.RenewalDate || null,
+
+
+      Active:
+      Boolean(data.Active),
+
+
+      AddedBy:
+      currentUser.Title,
+
+
+      LastUpdatedBy:
+      currentUser.Title,
+
+
+      LastUpdatedDate:
+      new Date().toISOString()
+
 
     };
 
 
+
     console.log(
-      "Creating License:",
+      "Creating License",
       payload
     );
+
 
 
     return this.postItem(
@@ -102,10 +145,41 @@ export class LicenseMasterService extends SharePointService {
 
 
 
+
+
   public async updateLicense(
-    id: number,
-    data: Partial<ILicenseMaster>
-  ): Promise<void> {
+
+    id:number,
+
+    data:Partial<ILicenseMaster>
+
+  ):Promise<void>{
+
+
+
+    const currentUser =
+    await this.getCurrentUser();
+
+
+
+
+    const payload = {
+
+
+      ...data,
+
+
+      LastUpdatedBy:
+      currentUser.Title,
+
+
+      LastUpdatedDate:
+      new Date().toISOString()
+
+
+    };
+
+
 
 
     await this.updateItem(
@@ -114,13 +188,34 @@ export class LicenseMasterService extends SharePointService {
 
       id,
 
-      data
+      payload
 
     );
+
 
 
   }
 
 
+
+
+
+
+
+  private async getCurrentUser(){
+
+  const user =
+  await this.context.spHttpClient.get(
+
+    `${this.context.webAbsoluteUrl}/_api/web/currentuser`,
+
+    SPHttpClient.configurations.v1
+
+  );
+
+
+  return await user.json();
+
+}
 
 }

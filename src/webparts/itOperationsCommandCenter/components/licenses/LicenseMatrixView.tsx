@@ -6,11 +6,6 @@ import {
   ILicenseAllocation
 } from "../../services/LicenseAllocationService";
 
-import {
-  LicenseService,
-  ILicense
-} from "../../services/LicenseService";
-
 
 interface IProps {
 
@@ -35,8 +30,6 @@ interface IState {
 
   licenses:string[];
 
-  licenseMaster:ILicense[];
-
   loading:boolean;
 
   error?:string;
@@ -51,8 +44,6 @@ extends React.Component<IProps,IState>{
 
 private service:LicenseAllocationService;
 
-private licenseService:LicenseService;
-
 
 
 constructor(props:IProps){
@@ -66,13 +57,6 @@ props.serviceContext
 );
 
 
-this.licenseService =
-new LicenseService(
-props.serviceContext
-);
-
-
-
 this.state={
 
 allocations:[],
@@ -80,8 +64,6 @@ allocations:[],
 clients:[],
 
 licenses:[],
-
-licenseMaster:[],
 
 loading:true
 
@@ -110,38 +92,35 @@ await this.service.getAllocations();
 
 
 
-const master =
-await this.licenseService.getLicenses();
-
-
-
 const active =
 data.filter(
 item =>
-this.getStatus(item.Status) !== "Released"
+this.getStatus(item.Status)!=="Released"
 );
 
 
 
-const clients:string[] =
+const clients =
 Array.from(
 new Set(
 active.map(
 x=>x.Client?.Title || ""
 )
 )
-).filter(Boolean);
+)
+.filter(Boolean);
 
 
 
-const licenses:string[] =
+const licenses =
 Array.from(
 new Set(
-master.map(
-x=>x.Title
+active.map(
+x=>x.License?.Title || ""
 )
 )
-).filter(Boolean);
+)
+.filter(Boolean);
 
 
 
@@ -152,8 +131,6 @@ allocations:active,
 clients,
 
 licenses,
-
-licenseMaster:master,
 
 loading:false
 
@@ -166,13 +143,16 @@ catch(error){
 
 console.error(error);
 
+
 this.setState({
 
 loading:false,
 
-error:"Unable to load license data"
+error:
+"Unable to load license allocations"
 
 });
+
 
 }
 
@@ -202,128 +182,34 @@ license:string
 
 return this.state.allocations.filter(
 
-item =>
+item=>
 
-item.Client?.Title === client &&
+item.Client?.Title===client &&
 
-item.License?.Title === license
+item.License?.Title===license
 
 ).length;
+
 
 }
 
 
 
-private getTotal(
-client:string
-){
+private getTotal(client:string){
 
 return this.state.allocations.filter(
 
-item =>
+item=>
 
-item.Client?.Title === client
-
-).length;
-
-}
-
-
-
-private getLicenseTotal(
-license:string
-){
-
-return this.state.allocations.filter(
-
-item =>
-
-item.License?.Title === license
+item.Client?.Title===client
 
 ).length;
 
-}
-
-
-
-private getLicenseUsed(
-license:string
-){
-
-return this.state.allocations.filter(
-
-item =>
-
-item.License?.Title === license
-
-).length;
 
 }
 
 
 
-private getLicenseAvailable(
-license:string
-){
-
-const item =
-this.state.licenseMaster.find(
-
-x=>x.Title===license
-
-);
-
-
-if(!item){
-
-return 0;
-
-}
-
-
-return (
-
-Number(item.TotalLicense)
-
--
-
-this.getLicenseUsed(license)
-
-);
-
-}
-
-
-
-private getTotalPurchased(){
-
-return this.state.licenseMaster.reduce(
-
-(sum,item)=>
-
-sum + Number(item.TotalLicense || 0),
-
-0
-
-);
-
-}
-
-
-
-private getTotalAvailable(){
-
-return (
-
-this.getTotalPurchased()
-
--
-
-this.state.allocations.length
-
-);
-
-}
 public render(){
 
 
@@ -332,7 +218,9 @@ if(this.state.loading){
 return (
 
 <div className={styles.loading}>
-Loading license matrix...
+
+Loading license allocation...
+
 </div>
 
 );
@@ -352,12 +240,14 @@ return (
 <div>
 
 <h1>
-License Management
+Client License Allocation Matrix
 </h1>
 
+
 <p>
-Client wise license usage overview
+Client wise license assignment overview
 </p>
+
 
 </div>
 
@@ -367,110 +257,52 @@ Client wise license usage overview
 
 
 <button
+
 className={styles.backButton}
-onClick={this.props.onBack}
+
+onClick={
+this.props.onBack
+}
+
 >
+
 ← Dashboard
+
 </button>
 
 
 
 <button
+
 className={styles.primaryButton}
-onClick={this.props.onNewAllocation}
+
+onClick={
+this.props.onNewAllocation
+}
+
 >
+
 ＋ Allocate License
+
 </button>
 
 
 
 <button
-className={styles.primaryButton}
-onClick={this.props.onInventory}
+
+className={styles.inventoryButton}
+
+onClick={
+this.props.onInventory
+}
+
 >
+
 ▣ License Inventory
+
 </button>
 
 
-</div>
-
-
-</div>
-
-
-
-
-
-<div className={styles.cards}>
-
-
-<div className={styles.card}>
-
-<span>
-Total Purchased
-</span>
-
-<strong>
-{this.getTotalPurchased()}
-</strong>
-
-<small>
-License Quantity
-</small>
-
-</div>
-
-
-
-<div className={styles.card}>
-
-<span>
-Allocated
-</span>
-
-<strong>
-{this.state.allocations.length}
-</strong>
-
-<small>
-Active Allocation
-</small>
-
-</div>
-
-
-
-<div className={styles.card}>
-
-<span>
-Available
-</span>
-
-<strong>
-{this.getTotalAvailable()}
-</strong>
-
-<small>
-Remaining License
-</small>
-
-</div>
-
-
-
-<div className={styles.card}>
-
-<span>
-License Types
-</span>
-
-<strong>
-{this.state.licenseMaster.length}
-</strong>
-
-<small>
-Products
-</small>
 
 </div>
 
@@ -480,155 +312,27 @@ Products
 
 
 
+<div className={styles.tableCard}>
 
 
-<div className={styles.licenseSummaryBox}>
+<div className={styles.tableHeader}>
 
 
 <h2>
-License Availability
+License Allocation
 </h2>
 
 
-<p>
-Current license usage and remaining count
-</p>
-
-
-
-<table className={styles.summaryTable}>
-
-
-<thead>
-
-<tr>
-
-<th>
-License
-</th>
-
-<th>
-Total
-</th>
-
-<th>
-Used
-</th>
-
-<th>
-Available
-</th>
-
-</tr>
-
-</thead>
-
-
-
-<tbody>
-
-
-{
-
-this.state.licenseMaster.map(
-
-license=>(
-
-
-<tr key={license.Id}>
-
-
-<td>
-{license.Title}
-</td>
-
-
-<td>
-
-<span className={styles.totalBadge}>
-{license.TotalLicense}
+<span>
+Active Assignments
 </span>
-
-</td>
-
-
-<td>
-
-<span className={styles.usedBadge}>
-{
-this.getLicenseUsed(
-license.Title
-)
-}
-</span>
-
-</td>
-
-
-<td>
-
-<span className={styles.availableBadge}>
-{
-this.getLicenseAvailable(
-license.Title
-)
-}
-</span>
-
-</td>
-
-
-</tr>
-
-
-)
-
-)
-
-
-}
-
-
-</tbody>
-
-
-</table>
 
 
 </div>
 
 
 
-
-
-
-
-<div className={styles.matrixBox}>
-
-
-<div className={styles.matrixHeader}>
-
-
-<div>
-
-<h2>
-Client License Allocation Matrix
-</h2>
-
-
-<p>
-Client license allocation overview
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-
+<div className={styles.tableWrapper}>
 
 
 <table>
@@ -636,11 +340,14 @@ Client license allocation overview
 
 <thead>
 
+
 <tr>
+
 
 <th>
 Client
 </th>
+
 
 
 {
@@ -650,7 +357,9 @@ this.state.licenses.map(
 license=>(
 
 <th key={license}>
+
 {license}
+
 </th>
 
 )
@@ -668,13 +377,14 @@ Total
 
 </tr>
 
+
 </thead>
 
 
 
 
-
 <tbody>
+
 
 
 {
@@ -685,7 +395,9 @@ client=>(
 
 
 <tr
+
 key={client}
+
 onClick={()=>{
 
 if(this.props.onClientSelect){
@@ -695,12 +407,14 @@ this.props.onClientSelect(client);
 }
 
 }}
+
 >
 
 
+<td className={styles.clientName}>
 
-<td>
 {client}
+
 </td>
 
 
@@ -716,21 +430,31 @@ license=>(
 
 
 <span
+
 className={
+
 this.getCount(client,license)
+
 ?
-styles.greenBadge
+
+styles.activeBadge
+
 :
-styles.greyBadge
+
+styles.emptyBadge
+
 }
+
 >
 
 
 {
+
 this.getCount(
 client,
 license
 )
+
 }
 
 
@@ -744,6 +468,7 @@ license
 
 )
 
+
 }
 
 
@@ -751,11 +476,14 @@ license
 <td>
 
 
-<span className={styles.blueBadge}>
+<span className={styles.totalBadge}>
 
 {
+
 this.getTotal(client)
+
 }
+
 
 </span>
 
@@ -773,59 +501,16 @@ this.getTotal(client)
 
 }
 
-
-
-<tr className={styles.summary}>
-
-
-<td>
-Total Summary
-</td>
-
-
-{
-
-this.state.licenses.map(
-
-license=>(
-
-
-<td key={license}>
-
-{
-this.getLicenseTotal(
-license
-)
-}
-
-</td>
-
-
-)
-
-)
-
-
-}
-
-
-
-<td>
-
-{
-this.state.allocations.length
-}
-
-</td>
-
-
-</tr>
 
 
 </tbody>
 
 
+
 </table>
+
+
+</div>
 
 
 </div>
@@ -839,5 +524,6 @@ this.state.allocations.length
 
 
 }
+
 
 }

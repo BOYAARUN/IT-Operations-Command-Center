@@ -1,81 +1,154 @@
 .page {
-  padding: 24px;
+  padding: 32px;
   background: #f8fafc;
+  min-height: 100%;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
-.header h2 {
+.header h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #172554;
 }
 
 .header p {
+  margin-top: 8px;
   color: #64748b;
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
 }
 
 .addButton {
   background: #2563eb;
   color: white;
   border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-right: 10px;
+  font-size: 14px;
+}
+
+.addButton:hover {
+  background: #1d4ed8;
 }
 
 .backButton {
   background: white;
-  border: 1px solid #d1d5db;
-  padding: 10px 18px;
+  border: 1px solid #dbe3f0;
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #334155;
+}
+
+.tableCard {
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  background: #f1f5ff;
+  color: #1e293b;
+  padding: 18px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 700;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+tbody td {
+  padding: 18px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #475569;
+  font-size: 14px;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+.name {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+input {
+  width: 90px;
+  height: 35px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0 10px;
+}
+
+.greenBadge {
+  display: inline-flex;
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 700;
+}
+
+.editButton {
+  background: #eff6ff;
+  color: #2563eb;
+  border: none;
+  padding: 8px 15px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+.saveButton {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.card {
-  background: white;
-  padding: 25px;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.card h3 {
-  margin-top: 0;
-}
-
-.stats {
-  display: flex;
-  justify-content: space-between;
-}
-
-.stats div {
-  text-align: center;
-}
-
-.stats span {
-  display: block;
-  color: #64748b;
-  font-size: 13px;
-}
-
-.stats strong {
-  font-size: 24px;
+.message {
+  margin-top: 20px;
+  padding: 15px;
+  background: #ecfdf5;
+  color: #166534;
+  border-radius: 10px;
 }
 
 .loading {
-  padding: 40px;
+  padding: 50px;
   text-align: center;
+  color: #475569;
+  font-size: 18px;
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
 }
 /*# sourceMappingURL=LicenseInventoryView.module.scss.css.map */

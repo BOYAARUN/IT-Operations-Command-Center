@@ -3,24 +3,23 @@ import * as React from "react";
 import styles from "./LicenseInventoryView.module.scss";
 
 import {
- LicenseMasterService,
- ILicenseMaster
+  LicenseMasterService,
+  ILicenseMaster
 } from "../../services/LicenseMasterService";
 
 import {
- LicenseAllocationService,
- ILicenseAllocation
+  LicenseAllocationService,
+  ILicenseAllocation
 } from "../../services/LicenseAllocationService";
-
 
 
 interface IProps {
 
- serviceContext:any;
+  serviceContext:any;
 
- onAddLicense?:()=>void;
+  onAddLicense?:()=>void;
 
- onBack?:()=>void;
+  onBack?:()=>void;
 
 }
 
@@ -28,11 +27,17 @@ interface IProps {
 
 interface IState {
 
- licenses:ILicenseMaster[];
+  licenses:ILicenseMaster[];
 
- allocations:ILicenseAllocation[];
+  allocations:ILicenseAllocation[];
 
- loading:boolean;
+  loading:boolean;
+
+  editingId?:number;
+
+  editValue:number;
+
+  message?:string;
 
 }
 
@@ -40,7 +45,6 @@ interface IState {
 
 export default class LicenseInventoryView
 extends React.Component<IProps,IState>{
-
 
 
 private licenseService:LicenseMasterService;
@@ -73,12 +77,15 @@ licenses:[],
 
 allocations:[],
 
-loading:true
+loading:true,
+
+editValue:0
 
 };
 
 
 }
+
 
 
 
@@ -94,6 +101,9 @@ await this.loadData();
 
 
 private async loadData(){
+
+
+try{
 
 
 const licenses =
@@ -118,6 +128,31 @@ loading:false
 
 }
 
+catch(error){
+
+console.error(
+"Inventory load error",
+error
+);
+
+
+this.setState({
+
+loading:false,
+
+message:
+"Unable to load inventory"
+
+});
+
+
+}
+
+
+
+}
+
+
 
 
 
@@ -136,17 +171,11 @@ x.License?.Id === licenseId
 &&
 
 (
-
 typeof x.Status==="string"
-
 ?
-
 x.Status
-
 :
-
 x.Status?.Value
-
 )
 
 !=="Released"
@@ -160,10 +189,99 @@ x.Status?.Value
 
 
 
+
+private startEdit(
+license:ILicenseMaster
+){
+
+
+this.setState({
+
+editingId:license.Id,
+
+editValue:license.TotalLicense
+
+});
+
+
+}
+
+
+
+
+
+
+
+private async saveEdit(
+license:ILicenseMaster
+){
+
+
+try{
+
+
+await this.licenseService.updateLicense(
+
+license.Id,
+
+{
+
+TotalLicense:
+Number(this.state.editValue)
+
+}
+
+);
+
+
+
+this.setState({
+
+editingId:undefined,
+
+message:
+"License quantity updated"
+
+});
+
+
+
+await this.loadData();
+
+
+}
+
+catch(error){
+
+console.error(
+"Update license error",
+error
+);
+
+
+this.setState({
+
+message:
+"Unable to update license"
+
+});
+
+
+}
+
+
+
+}
+
+
+
+
+
+
 public render(){
 
 
-if(this.state.loading)
+if(this.state.loading){
 
 return (
 
@@ -174,6 +292,9 @@ Loading inventory...
 </div>
 
 );
+
+}
+
 
 
 
@@ -195,7 +316,7 @@ License Inventory
 
 <p>
 
-Track total, allocated and available licenses
+Manage purchased licenses and availability
 
 </p>
 
@@ -221,6 +342,7 @@ this.props.onAddLicense
 </button>
 
 
+
 <button
 
 className={styles.backButton}
@@ -239,12 +361,65 @@ this.props.onBack
 </div>
 
 
+
 </div>
 
 
 
 
-<div className={styles.grid}>
+
+<div className={styles.tableCard}>
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+License
+</th>
+
+
+<th>
+Vendor
+</th>
+
+
+<th>
+Purchased
+</th>
+
+
+<th>
+Allocated
+</th>
+
+
+<th>
+Available
+</th>
+
+
+<th>
+Updated By
+</th>
+
+
+<th>
+Action
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
 
 
 {
@@ -267,71 +442,145 @@ license.TotalLicense - allocated;
 
 return (
 
-<div
 
-className={styles.card}
-
-key={license.Id}
-
->
+<tr key={license.Id}>
 
 
-<h3>
+<td className={styles.name}>
 
 {license.Title}
 
-</h3>
-
-
-<div className={styles.stats}>
-
-
-<div>
-
-<span>Total</span>
-
-<strong>
-
-{license.TotalLicense}
-
-</strong>
-
-</div>
+</td>
 
 
 
-<div>
+<td>
 
-<span>Allocated</span>
+{license.Vendor || "-"}
 
-<strong>
+</td>
+
+
+
+<td>
+
+
+{
+
+this.state.editingId === license.Id
+
+?
+
+<input
+
+type="number"
+
+value={
+this.state.editValue
+}
+
+onChange={
+e=>
+
+this.setState({
+
+editValue:
+Number(e.target.value)
+
+})
+
+}
+
+/>
+
+
+:
+
+license.TotalLicense
+
+
+}
+
+
+</td>
+
+
+
+<td>
 
 {allocated}
 
-</strong>
-
-</div>
+</td>
 
 
 
-<div>
+<td>
 
-<span>Available</span>
-
-<strong>
+<span className={styles.greenBadge}>
 
 {available}
 
-</strong>
+</span>
 
-</div>
-
-
-
-</div>
+</td>
 
 
-</div>
+
+<td>
+
+{license.LastUpdatedBy || "-"}
+
+</td>
+
+
+
+<td>
+
+
+{
+
+this.state.editingId === license.Id
+
+?
+
+
+<button
+
+className={styles.saveButton}
+
+onClick={()=>this.saveEdit(license)}
+
+>
+
+Save
+
+</button>
+
+
+:
+
+
+<button
+
+className={styles.editButton}
+
+onClick={()=>this.startEdit(license)}
+
+>
+
+Edit
+
+</button>
+
+
+}
+
+
+</td>
+
+
+
+</tr>
 
 
 );
@@ -345,10 +594,32 @@ key={license.Id}
 
 
 
+</tbody>
+
+
+</table>
+
+
+{
+
+this.state.message &&
+
+<div className={styles.message}>
+
+{this.state.message}
+
+</div>
+
+}
+
+
+
 </div>
 
 
+
 </div>
+
 
 );
 
