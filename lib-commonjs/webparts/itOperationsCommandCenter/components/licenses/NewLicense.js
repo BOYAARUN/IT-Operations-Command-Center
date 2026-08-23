@@ -8,6 +8,15 @@ var NewLicense = /** @class */ (function (_super) {
     tslib_1.__extends(NewLicense, _super);
     function NewLicense(props) {
         var _this = _super.call(this, props) || this;
+        _this.goBack = function () {
+            if (_this.props.onBack) {
+                _this.props.onBack();
+                return;
+            }
+            if (_this.props.onCancel) {
+                _this.props.onCancel();
+            }
+        };
         _this.service =
             new LicenseMasterService_1.LicenseMasterService(props.serviceContext);
         _this.state = {
@@ -37,9 +46,11 @@ var NewLicense = /** @class */ (function (_super) {
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         this.setState({
-                            saving: true
+                            saving: true,
+                            message: ""
                         });
                         return [4 /*yield*/, this.service.createLicense({
+                                Id: 0,
                                 Title: this.state.licenseName,
                                 Vendor: this.state.vendor,
                                 TotalLicense: Number(this.state.totalLicense),
@@ -76,7 +87,7 @@ var NewLicense = /** @class */ (function (_super) {
                 React.createElement("div", null,
                     React.createElement("h2", null, "Add New License"),
                     React.createElement("p", null, "Add license inventory details")),
-                React.createElement("button", { className: NewLicense_module_scss_1.default.backButton, onClick: this.props.onCancel }, "\u2190 Back")),
+                React.createElement("button", { className: NewLicense_module_scss_1.default.backButton, onClick: this.goBack }, "\u2190 Back")),
             React.createElement("div", { className: NewLicense_module_scss_1.default.card },
                 React.createElement("label", null, "License Name"),
                 React.createElement("input", { value: this.state.licenseName, onChange: function (e) {
@@ -112,7 +123,7 @@ var NewLicense = /** @class */ (function (_super) {
                 this.state.message &&
                     React.createElement("div", { className: NewLicense_module_scss_1.default.message }, this.state.message),
                 React.createElement("div", { className: NewLicense_module_scss_1.default.actions },
-                    React.createElement("button", { className: NewLicense_module_scss_1.default.cancelButton, onClick: this.props.onCancel }, "Cancel"),
+                    React.createElement("button", { className: NewLicense_module_scss_1.default.cancelButton, onClick: this.goBack }, "Cancel"),
                     React.createElement("button", { className: NewLicense_module_scss_1.default.saveButton, disabled: this.state.saving, onClick: function () { return _this.save(); } }, this.state.saving
                         ?
                             "Saving..."

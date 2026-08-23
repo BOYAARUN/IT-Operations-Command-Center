@@ -92,7 +92,7 @@ var LicenseMatrixView = /** @class */ (function (_super) {
         return (React.createElement("div", { className: LicenseMatrixView_module_scss_1.default.page },
             React.createElement("div", { className: LicenseMatrixView_module_scss_1.default.header },
                 React.createElement("div", null,
-                    React.createElement("h1", null, "License Allocation Matrix"),
+                    React.createElement("h1", null, "Client License Allocation"),
                     React.createElement("p", null, "Client wise license usage overview")),
                 React.createElement("div", { className: LicenseMatrixView_module_scss_1.default.actions },
                     React.createElement("button", { className: LicenseMatrixView_module_scss_1.default.backButton, onClick: this.props.onBack }, "\u2190 Dashboard"),

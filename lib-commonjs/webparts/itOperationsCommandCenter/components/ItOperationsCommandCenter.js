@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var LicenseInventoryView_1 = tslib_1.__importDefault(require("./licenses/LicenseInventoryView"));
+var NewLicense_1 = tslib_1.__importDefault(require("./licenses/NewLicense"));
 var React = tslib_1.__importStar(require("react"));
 var ItOperationsCommandCenter_module_scss_1 = tslib_1.__importDefault(require("./ItOperationsCommandCenter.module.scss"));
 var NewJoinerForm_1 = tslib_1.__importDefault(require("./forms/NewJoinerForm"));
@@ -52,9 +54,9 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
                 error: ''
             });
         };
-        _this._openVendorActions = function () {
+        _this._openLicenses = function () {
             _this.setState({
-                view: 'vendorActions',
+                view: 'licenses',
                 error: ''
             });
         };
@@ -64,10 +66,20 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
                 error: ''
             });
         };
-        _this._openLicenses = function () {
+        _this._openVendorActions = function () {
             _this.setState({
-                view: 'licenses',
-                selectedClient: undefined,
+                view: 'vendorActions',
+                error: ''
+            });
+        };
+        _this._openLicenseInventory = function () {
+            _this.setState({
+                view: "licenseInventory"
+            });
+        };
+        _this._openNewLicense = function () {
+            _this.setState({
+                view: 'newLicense',
                 error: ''
             });
         };
@@ -437,8 +449,21 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
             return (React.createElement(AssetsView_1.default, { spHttpClient: this.props.spHttpClient, spHttpClientConfiguration: this.props
                     .spHttpClientConfiguration, webAbsoluteUrl: this.props.webAbsoluteUrl, onBack: this._backToDashboard, onDashboard: this._goDashboard }));
         }
-        if (this.state.view ===
-            'licenses') {
+        if (this.state.view === 'licenseInventory') {
+            return (React.createElement(LicenseInventoryView_1.default, { serviceContext: {
+                    spHttpClient: this.props.spHttpClient,
+                    spHttpClientConfiguration: this.props.spHttpClientConfiguration,
+                    webAbsoluteUrl: this.props.webAbsoluteUrl
+                }, onAddLicense: this._openNewLicense, onBack: this._openLicenses }));
+        }
+        if (this.state.view === 'newLicense') {
+            return (React.createElement(NewLicense_1.default, { serviceContext: {
+                    spHttpClient: this.props.spHttpClient,
+                    spHttpClientConfiguration: this.props.spHttpClientConfiguration,
+                    webAbsoluteUrl: this.props.webAbsoluteUrl
+                }, onBack: this._openLicenseInventory }));
+        }
+        if (this.state.view === 'licenses') {
             return (React.createElement(LicenseMatrixView_1.default, { serviceContext: {
                     spHttpClient: this.props.spHttpClient,
                     spHttpClientConfiguration: this.props.spHttpClientConfiguration,
@@ -506,7 +531,9 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
                         React.createElement("div", { className: ItOperationsCommandCenter_module_scss_1.default.brandTitle }, "IT OPERATIONS"),
                         React.createElement("div", { className: ItOperationsCommandCenter_module_scss_1.default.brandSubtitle }, "Command Center"))),
                 React.createElement("nav", { className: ItOperationsCommandCenter_module_scss_1.default.navigation },
-                    React.createElement("button", { className: "".concat(ItOperationsCommandCenter_module_scss_1.default.navItem, " ").concat(ItOperationsCommandCenter_module_scss_1.default.navItemActive) },
+                    React.createElement("button", { className: this.state.view === 'dashboard'
+                            ? "".concat(ItOperationsCommandCenter_module_scss_1.default.navItem, " ").concat(ItOperationsCommandCenter_module_scss_1.default.navItemActive)
+                            : ItOperationsCommandCenter_module_scss_1.default.navItem },
                         React.createElement("span", { className: ItOperationsCommandCenter_module_scss_1.default.navIcon }, "\u2302"),
                         "Dashboard"),
                     React.createElement("button", { className: ItOperationsCommandCenter_module_scss_1.default.navItem, onClick: this._openNewJoiners },

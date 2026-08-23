@@ -6,14 +6,19 @@ import {
 } from "../../services/LicenseAllocationService";
 
 import {
-  LicenseService,
-  ILicense
-} from "../../services/LicenseService";
+  LicenseMasterService,
+  ILicenseMaster
+} from "../../services/LicenseMasterService";
 
-import {
-  EmployeeService,
-  IEmployee
-} from "../../services/EmployeeService";
+
+interface IClient {
+
+  Id:number;
+
+  Title:string;
+
+}
+
 
 
 interface IProps {
@@ -31,13 +36,16 @@ interface IProps {
 }
 
 
+
 interface IState {
 
-  employees:IEmployee[];
+  licenses:ILicenseMaster[];
 
-  licenses:ILicense[];
+  clients:IClient[];
 
-  selectedEmployee:string;
+  email:string;
+
+  selectedClient:string;
 
   selectedLicense:string;
 
@@ -57,9 +65,7 @@ extends React.Component<IProps,IState>{
 
 private allocationService:LicenseAllocationService;
 
-private licenseService:LicenseService;
-
-private employeeService:EmployeeService;
+private licenseService:LicenseMasterService;
 
 
 
@@ -75,13 +81,7 @@ props.serviceContext
 
 
 this.licenseService =
-new LicenseService(
-props.serviceContext
-);
-
-
-this.employeeService =
-new EmployeeService(
+new LicenseMasterService(
 props.serviceContext
 );
 
@@ -89,11 +89,13 @@ props.serviceContext
 
 this.state={
 
-employees:[],
-
 licenses:[],
 
-selectedEmployee:"",
+clients:[],
+
+email:"",
+
+selectedClient:"",
 
 selectedLicense:"",
 
@@ -108,22 +110,11 @@ saving:false
 
 
 
+
+
 public async componentDidMount(){
 
-await this.loadData();
-
-}
-
-
-
-private async loadData(){
-
 try{
-
-
-const employees =
-await this.employeeService.getEmployees();
-
 
 
 const licenses =
@@ -131,11 +122,35 @@ await this.licenseService.getLicenses();
 
 
 
+const clientUrl =
+
+`${this.props.serviceContext.webAbsoluteUrl}/_api/web/lists/getbytitle('Client Master')/items?$select=Id,Title&$orderby=Title`;
+
+
+
+const clientResponse =
+
+await this.props.serviceContext.spHttpClient.get(
+
+clientUrl,
+
+this.props.serviceContext.spHttpClientConfiguration
+
+);
+
+
+
+const clientData =
+await clientResponse.json();
+
+
+
 this.setState({
 
-employees,
-
 licenses,
+
+clients:
+clientData.value || [],
 
 loading:false
 
@@ -157,14 +172,19 @@ this.setState({
 loading:false,
 
 message:
-"Unable to load employees or licenses"
+"Unable to load clients or licenses"
 
 });
 
 
 }
 
+
 }
+
+
+
+
 
 
 
@@ -172,15 +192,21 @@ message:
 private async save(){
 
 
+
 if(
-!this.state.selectedEmployee ||
+
+!this.state.email ||
+
+!this.state.selectedClient ||
+
 !this.state.selectedLicense
+
 ){
 
 this.setState({
 
 message:
-"Select employee and license"
+"Enter email, select client and license"
 
 });
 
@@ -195,22 +221,87 @@ try{
 
 this.setState({
 
-saving:true
+saving:true,
+
+message:""
 
 });
 
 
 
+
+
+const userUrl =
+
+`${this.props.serviceContext.webAbsoluteUrl}/_api/web/ensureuser`;
+
+
+
+
+
+const userResponse =
+
+await this.props.serviceContext.spHttpClient.post(
+
+userUrl,
+
+this.props.serviceContext.spHttpClientConfiguration,
+
+{
+
+headers:{
+
+"Accept":
+"application/json;odata=nometadata",
+
+"Content-Type":
+"application/json;odata=nometadata"
+
+},
+
+body:JSON.stringify({
+
+logonName:
+this.state.email
+
+})
+
+}
+
+);
+
+
+
+
+
+const user =
+await userResponse.json();
+
+
+
+
+
+
+
 await this.allocationService.createAllocation({
+
+
 
 Title:
 "License Allocation",
 
 
+
 EmployeeNameId:
+user.Id,
+
+
+
+ClientId:
 Number(
-this.state.selectedEmployee
+this.state.selectedClient
 ),
+
 
 
 LicenseId:
@@ -219,20 +310,20 @@ this.state.selectedLicense
 ),
 
 
-ClientId:
-this.props.clientId || null,
-
 
 AllocatedDate:
-new Date()
-.toISOString(),
+new Date().toISOString(),
+
 
 
 Status:
 "Active"
 
 
+
 });
+
+
 
 
 
@@ -241,9 +332,16 @@ this.setState({
 saving:false,
 
 message:
-"License allocated successfully"
+"License allocated successfully",
+
+email:"",
+
+selectedClient:"",
+
+selectedLicense:""
 
 });
+
 
 
 if(this.props.onSaved){
@@ -253,15 +351,19 @@ this.props.onSaved();
 }
 
 
-
 }
+
+
 
 catch(error){
 
 
 console.error(
-"Create allocation error",
+
+"Allocation save error",
+
 error
+
 );
 
 
@@ -278,13 +380,16 @@ message:
 }
 
 
+
 }
 
 
 
 
-public render(){
 
+
+
+public render(){
 
 
 if(this.state.loading){
@@ -293,13 +398,15 @@ return (
 
 <div className={styles.loading}>
 
-Loading allocation form...
+Loading clients and licenses...
 
 </div>
 
 );
 
 }
+
+
 
 
 
@@ -319,11 +426,13 @@ Allocate License
 
 </h2>
 
+
 <p>
 
 Assign license to employee
 
 </p>
+
 
 </div>
 
@@ -333,9 +442,7 @@ Assign license to employee
 
 className={styles.secondaryButton}
 
-onClick={
-this.props.onCancel
-}
+onClick={this.props.onCancel}
 
 >
 
@@ -344,8 +451,9 @@ this.props.onCancel
 </button>
 
 
-
 </div>
+
+
 
 
 
@@ -355,24 +463,55 @@ this.props.onCancel
 
 <label>
 
-Employee
+Employee Email
 
 </label>
 
 
-<select
+<input
 
-value={
-this.state.selectedEmployee
-}
+type="email"
+
+placeholder="user@finacplus.com"
+
+value={this.state.email}
 
 onChange={
 e=>
 
 this.setState({
 
-selectedEmployee:
-e.target.value
+email:e.target.value
+
+})
+
+}
+
+/>
+
+
+
+
+
+
+<label>
+
+Client
+
+</label>
+
+
+
+<select
+
+value={this.state.selectedClient}
+
+onChange={
+e=>
+
+this.setState({
+
+selectedClient:e.target.value
 
 })
 
@@ -383,29 +522,30 @@ e.target.value
 
 <option value="">
 
-Select Employee
+Select Client
 
 </option>
-
 
 
 {
 
-this.state.employees.map(
+this.state.clients.map(
 
-emp=>
+client=>(
 
 <option
 
-key={emp.Id}
+key={client.Id}
 
-value={emp.Id}
+value={client.Id}
 
 >
 
-{emp.Title}
+{client.Title}
 
 </option>
+
+)
 
 )
 
@@ -417,6 +557,9 @@ value={emp.Id}
 
 
 
+
+
+
 <label>
 
 License
@@ -424,19 +567,17 @@ License
 </label>
 
 
+
 <select
 
-value={
-this.state.selectedLicense
-}
+value={this.state.selectedLicense}
 
 onChange={
 e=>
 
 this.setState({
 
-selectedLicense:
-e.target.value
+selectedLicense:e.target.value
 
 })
 
@@ -457,7 +598,7 @@ Select License
 
 this.state.licenses.map(
 
-license=>
+license=>(
 
 <option
 
@@ -473,6 +614,8 @@ value={license.Id}
 
 )
 
+)
+
 }
 
 
@@ -481,10 +624,11 @@ value={license.Id}
 
 
 
+
+
 {
 
 this.state.message &&
-
 
 <div className={styles.message}>
 
@@ -497,6 +641,7 @@ this.state.message &&
 
 
 
+
 <div className={styles.actions}>
 
 
@@ -504,9 +649,7 @@ this.state.message &&
 
 className={styles.cancelButton}
 
-onClick={
-this.props.onCancel
-}
+onClick={this.props.onCancel}
 
 >
 
@@ -516,19 +659,17 @@ Cancel
 
 
 
+
 <button
 
 className={styles.saveButton}
 
-disabled={
-this.state.saving
-}
+disabled={this.state.saving}
 
-onClick={
-()=>this.save()
-}
+onClick={()=>this.save()}
 
 >
+
 
 {
 
@@ -544,11 +685,13 @@ this.state.saving
 
 }
 
+
 </button>
 
 
 
 </div>
+
 
 
 </div>

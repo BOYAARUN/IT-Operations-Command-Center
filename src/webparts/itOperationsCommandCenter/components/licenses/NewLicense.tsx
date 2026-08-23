@@ -14,8 +14,9 @@ interface IProps {
 
   onCancel?:()=>void;
 
-}
+  onBack?:()=>void;
 
+}
 
 
 interface IState {
@@ -56,7 +57,6 @@ props.serviceContext
 );
 
 
-
 this.state={
 
 licenseName:"",
@@ -75,7 +75,6 @@ saving:false
 
 
 }
-
 
 
 
@@ -105,35 +104,21 @@ try{
 
 this.setState({
 
-saving:true
+saving:true,
+
+message:""
 
 });
 
 
 
 await this.service.createLicense({
-
-Title:
-this.state.licenseName,
-
-
-Vendor:
-this.state.vendor,
-
-
-TotalLicense:
-Number(
-this.state.totalLicense
-),
-
-
-RenewalDate:
-this.state.renewalDate,
-
-
-Active:
-this.state.active
-
+  Id:0,
+  Title:this.state.licenseName,
+  Vendor:this.state.vendor,
+  TotalLicense:Number(this.state.totalLicense),
+  RenewalDate:this.state.renewalDate,
+  Active:this.state.active
 });
 
 
@@ -184,6 +169,31 @@ message:
 
 
 
+private goBack = ():void => {
+
+
+if(this.props.onBack){
+
+this.props.onBack();
+
+return;
+
+}
+
+
+if(this.props.onCancel){
+
+this.props.onCancel();
+
+}
+
+
+}
+
+
+
+
+
 public render(){
 
 
@@ -203,13 +213,16 @@ Add New License
 
 </h2>
 
+
 <p>
 
 Add license inventory details
 
 </p>
 
+
 </div>
+
 
 
 <button
@@ -217,7 +230,7 @@ Add license inventory details
 className={styles.backButton}
 
 onClick={
-this.props.onCancel
+this.goBack
 }
 
 >
@@ -228,6 +241,7 @@ this.props.onCancel
 
 
 </div>
+
 
 
 
@@ -265,6 +279,7 @@ e.target.value
 
 
 
+
 <label>
 
 Vendor
@@ -291,6 +306,7 @@ e.target.value
 }
 
 />
+
 
 
 
@@ -327,6 +343,7 @@ e.target.value
 
 
 
+
 <label>
 
 Renewal Date
@@ -359,7 +376,9 @@ e.target.value
 
 
 
+
 <label className={styles.check}>
+
 
 <input
 
@@ -383,9 +402,12 @@ e.target.checked
 
 />
 
+
 Active
 
+
 </label>
+
 
 
 
@@ -404,6 +426,9 @@ this.state.message &&
 
 
 
+
+
+
 <div className={styles.actions}>
 
 
@@ -412,7 +437,7 @@ this.state.message &&
 className={styles.cancelButton}
 
 onClick={
-this.props.onCancel
+this.goBack
 }
 
 >
@@ -420,6 +445,8 @@ this.props.onCancel
 Cancel
 
 </button>
+
+
 
 
 
@@ -451,14 +478,17 @@ this.state.saving
 
 }
 
+
 </button>
 
 
-</div>
-
-
 
 </div>
+
+
+
+</div>
+
 
 
 </div>

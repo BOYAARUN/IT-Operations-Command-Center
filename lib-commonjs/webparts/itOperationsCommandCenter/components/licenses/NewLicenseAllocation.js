@@ -4,8 +4,7 @@ var tslib_1 = require("tslib");
 var React = tslib_1.__importStar(require("react"));
 var NewLicenseAllocation_module_scss_1 = tslib_1.__importDefault(require("./NewLicenseAllocation.module.scss"));
 var LicenseAllocationService_1 = require("../../services/LicenseAllocationService");
-var LicenseService_1 = require("../../services/LicenseService");
-var EmployeeService_1 = require("../../services/EmployeeService");
+var LicenseMasterService_1 = require("../../services/LicenseMasterService");
 var NewLicenseAllocation = /** @class */ (function (_super) {
     tslib_1.__extends(NewLicenseAllocation, _super);
     function NewLicenseAllocation(props) {
@@ -13,13 +12,12 @@ var NewLicenseAllocation = /** @class */ (function (_super) {
         _this.allocationService =
             new LicenseAllocationService_1.LicenseAllocationService(props.serviceContext);
         _this.licenseService =
-            new LicenseService_1.LicenseService(props.serviceContext);
-        _this.employeeService =
-            new EmployeeService_1.EmployeeService(props.serviceContext);
+            new LicenseMasterService_1.LicenseMasterService(props.serviceContext);
         _this.state = {
-            employees: [],
             licenses: [],
-            selectedEmployee: "",
+            clients: [],
+            email: "",
+            selectedClient: "",
             selectedLicense: "",
             loading: true,
             saving: false
@@ -28,95 +26,106 @@ var NewLicenseAllocation = /** @class */ (function (_super) {
     }
     NewLicenseAllocation.prototype.componentDidMount = function () {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.loadData()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    NewLicenseAllocation.prototype.loadData = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var employees, licenses, error_1;
+            var licenses, clientUrl, clientResponse, clientData, error_1;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.employeeService.getEmployees()];
-                    case 1:
-                        employees = _a.sent();
+                        _a.trys.push([0, 4, , 5]);
                         return [4 /*yield*/, this.licenseService.getLicenses()];
-                    case 2:
+                    case 1:
                         licenses = _a.sent();
+                        clientUrl = "".concat(this.props.serviceContext.webAbsoluteUrl, "/_api/web/lists/getbytitle('Client Master')/items?$select=Id,Title&$orderby=Title");
+                        return [4 /*yield*/, this.props.serviceContext.spHttpClient.get(clientUrl, this.props.serviceContext.spHttpClientConfiguration)];
+                    case 2:
+                        clientResponse = _a.sent();
+                        return [4 /*yield*/, clientResponse.json()];
+                    case 3:
+                        clientData = _a.sent();
                         this.setState({
-                            employees: employees,
                             licenses: licenses,
+                            clients: clientData.value || [],
                             loading: false
                         });
-                        return [3 /*break*/, 4];
-                    case 3:
+                        return [3 /*break*/, 5];
+                    case 4:
                         error_1 = _a.sent();
                         console.error("Load allocation data error", error_1);
                         this.setState({
                             loading: false,
-                            message: "Unable to load employees or licenses"
+                            message: "Unable to load clients or licenses"
                         });
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
     };
     NewLicenseAllocation.prototype.save = function () {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var error_2;
+            var userUrl, userResponse, user, error_2;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!this.state.selectedEmployee ||
+                        if (!this.state.email ||
+                            !this.state.selectedClient ||
                             !this.state.selectedLicense) {
                             this.setState({
-                                message: "Select employee and license"
+                                message: "Enter email, select client and license"
                             });
                             return [2 /*return*/];
                         }
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
+                        _a.trys.push([1, 5, , 6]);
                         this.setState({
-                            saving: true
+                            saving: true,
+                            message: ""
                         });
-                        return [4 /*yield*/, this.allocationService.createAllocation({
-                                Title: "License Allocation",
-                                EmployeeNameId: Number(this.state.selectedEmployee),
-                                LicenseId: Number(this.state.selectedLicense),
-                                ClientId: this.props.clientId || null,
-                                AllocatedDate: new Date()
-                                    .toISOString(),
-                                Status: "Active"
+                        userUrl = "".concat(this.props.serviceContext.webAbsoluteUrl, "/_api/web/ensureuser");
+                        return [4 /*yield*/, this.props.serviceContext.spHttpClient.post(userUrl, this.props.serviceContext.spHttpClientConfiguration, {
+                                headers: {
+                                    "Accept": "application/json;odata=nometadata",
+                                    "Content-Type": "application/json;odata=nometadata"
+                                },
+                                body: JSON.stringify({
+                                    logonName: this.state.email
+                                })
                             })];
                     case 2:
+                        userResponse = _a.sent();
+                        return [4 /*yield*/, userResponse.json()];
+                    case 3:
+                        user = _a.sent();
+                        return [4 /*yield*/, this.allocationService.createAllocation({
+                                Title: "License Allocation",
+                                EmployeeNameId: user.Id,
+                                ClientId: Number(this.state.selectedClient),
+                                LicenseId: Number(this.state.selectedLicense),
+                                AllocatedDate: new Date().toISOString(),
+                                Status: "Active"
+                            })];
+                    case 4:
                         _a.sent();
                         this.setState({
                             saving: false,
-                            message: "License allocated successfully"
+                            message: "License allocated successfully",
+                            email: "",
+                            selectedClient: "",
+                            selectedLicense: ""
                         });
                         if (this.props.onSaved) {
                             this.props.onSaved();
                         }
-                        return [3 /*break*/, 4];
-                    case 3:
+                        return [3 /*break*/, 6];
+                    case 5:
                         error_2 = _a.sent();
-                        console.error("Create allocation error", error_2);
+                        console.error("Allocation save error", error_2);
                         this.setState({
                             saving: false,
                             message: "Unable to allocate license"
                         });
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -124,7 +133,7 @@ var NewLicenseAllocation = /** @class */ (function (_super) {
     NewLicenseAllocation.prototype.render = function () {
         var _this = this;
         if (this.state.loading) {
-            return (React.createElement("div", { className: NewLicenseAllocation_module_scss_1.default.loading }, "Loading allocation form..."));
+            return (React.createElement("div", { className: NewLicenseAllocation_module_scss_1.default.loading }, "Loading clients and licenses..."));
         }
         return (React.createElement("div", { className: NewLicenseAllocation_module_scss_1.default.page },
             React.createElement("div", { className: NewLicenseAllocation_module_scss_1.default.header },
@@ -133,16 +142,20 @@ var NewLicenseAllocation = /** @class */ (function (_super) {
                     React.createElement("p", null, "Assign license to employee")),
                 React.createElement("button", { className: NewLicenseAllocation_module_scss_1.default.secondaryButton, onClick: this.props.onCancel }, "\u2190 Back")),
             React.createElement("div", { className: NewLicenseAllocation_module_scss_1.default.card },
-                React.createElement("label", null, "Employee"),
-                React.createElement("select", { value: this.state.selectedEmployee, onChange: function (e) {
+                React.createElement("label", null, "Employee Email"),
+                React.createElement("input", { type: "email", placeholder: "user@finacplus.com", value: this.state.email, onChange: function (e) {
                         return _this.setState({
-                            selectedEmployee: e.target.value
+                            email: e.target.value
+                        });
+                    } }),
+                React.createElement("label", null, "Client"),
+                React.createElement("select", { value: this.state.selectedClient, onChange: function (e) {
+                        return _this.setState({
+                            selectedClient: e.target.value
                         });
                     } },
-                    React.createElement("option", { value: "" }, "Select Employee"),
-                    this.state.employees.map(function (emp) {
-                        return React.createElement("option", { key: emp.Id, value: emp.Id }, emp.Title);
-                    })),
+                    React.createElement("option", { value: "" }, "Select Client"),
+                    this.state.clients.map(function (client) { return (React.createElement("option", { key: client.Id, value: client.Id }, client.Title)); })),
                 React.createElement("label", null, "License"),
                 React.createElement("select", { value: this.state.selectedLicense, onChange: function (e) {
                         return _this.setState({
@@ -150,9 +163,7 @@ var NewLicenseAllocation = /** @class */ (function (_super) {
                         });
                     } },
                     React.createElement("option", { value: "" }, "Select License"),
-                    this.state.licenses.map(function (license) {
-                        return React.createElement("option", { key: license.Id, value: license.Id }, license.Title);
-                    })),
+                    this.state.licenses.map(function (license) { return (React.createElement("option", { key: license.Id, value: license.Id }, license.Title)); })),
                 this.state.message &&
                     React.createElement("div", { className: NewLicenseAllocation_module_scss_1.default.message }, this.state.message),
                 React.createElement("div", { className: NewLicenseAllocation_module_scss_1.default.actions },

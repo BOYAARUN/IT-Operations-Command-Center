@@ -6,17 +6,17 @@ import {
 
 export interface ILicenseMaster {
 
-  Id:number;
+  Id: number;
 
-  Title:string;
+  Title: string;
 
-  Vendor?:string;
+  Vendor?: string;
 
-  TotalLicense:number;
+  TotalLicense: number;
 
-  RenewalDate?:string;
+  RenewalDate?: string;
 
-  Active:boolean;
+  Active: boolean;
 
 }
 
@@ -25,79 +25,101 @@ export interface ILicenseMaster {
 export class LicenseMasterService extends SharePointService {
 
 
-constructor(
-context:ISharePointServiceContext
-){
+  constructor(
+    context: ISharePointServiceContext
+  ) {
 
-super(context);
+    super(context);
 
-}
-
-
-
-public async getLicenses()
-:Promise<ILicenseMaster[]> {
-
-
-return this.getItems<ILicenseMaster>(
-
-"License Master",
-
-`?$select=
-Id,
-Title,
-Vendor,
-TotalLicense,
-RenewalDate,
-Active
-
-&$orderby=Title`
-
-);
-
-
-}
+  }
 
 
 
-
-public async createLicense(
-data:any
-):Promise<any>{
+  public async getLicenses()
+    : Promise<ILicenseMaster[]> {
 
 
-return this.postItem(
+    return this.getItems<ILicenseMaster>(
 
-"License Master",
+      "License Master",
 
-data
+      `?$select=
+      Id,
+      Title,
+      Vendor,
+      TotalLicense,
+      RenewalDate,
+      Active
+      &$orderby=Title`
 
-);
+    );
 
 
-}
+  }
 
 
 
 
-public async updateLicense(
-id:number,
-data:any
-):Promise<void>{
+
+  public async createLicense(
+    data: ILicenseMaster
+  ): Promise<any> {
 
 
-await this.updateItem(
+    const payload = {
 
-"License Master",
+      Title: data.Title,
 
-id,
+      Vendor: data.Vendor || "",
 
-data
+      TotalLicense: Number(data.TotalLicense),
 
-);
+      RenewalDate: data.RenewalDate || null,
+
+      Active: Boolean(data.Active)
+
+    };
 
 
-}
+    console.log(
+      "Creating License:",
+      payload
+    );
+
+
+    return this.postItem(
+
+      "License Master",
+
+      payload
+
+    );
+
+
+  }
+
+
+
+
+
+  public async updateLicense(
+    id: number,
+    data: Partial<ILicenseMaster>
+  ): Promise<void> {
+
+
+    await this.updateItem(
+
+      "License Master",
+
+      id,
+
+      data
+
+    );
+
+
+  }
 
 
 

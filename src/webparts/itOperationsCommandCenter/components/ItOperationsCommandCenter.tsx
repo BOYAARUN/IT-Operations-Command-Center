@@ -76,8 +76,7 @@ interface ILicenseResponse {
   value: ILicenseItem[];
 }
 
-
-  type IView =
+type IView =
   | 'dashboard'
   | 'newJoiners'
   | 'newJoinerForm'
@@ -88,7 +87,9 @@ interface ILicenseResponse {
   | 'assets'
   | 'licenses'
   | 'clientLicenses'
-  | 'newLicenseAllocation';
+  | 'newLicenseAllocation'
+  | 'licenseInventory'
+  | 'newLicense';
 
 interface IState {
   requests: IRequestItem[];
@@ -433,28 +434,44 @@ this._choiceValue(item.Status) !== 'Completed'
     });
   };
 
-  private _openVendorActions = (): void => {
 
-    this.setState({
-      view: 'vendorActions',
-      error: ''
-    });
-  };
 
-  private _openAssets = (): void => {
+private _openLicenses = (): void => {
+  this.setState({
+    view: 'licenses',
+    error: ''
+  });
+};
 
-    this.setState({
-      view: 'assets',
-      error: ''
-    });
-  };
-  private _openLicenses = (): void => {
+private _openAssets = (): void => {
+  this.setState({
+    view: 'assets',
+    error: ''
+  });
+};
+
+private _openVendorActions = (): void => {
+  this.setState({
+    view: 'vendorActions',
+    error: ''
+  });
+};
+
+private _openLicenseInventory = (): void => {
+
+  this.setState({
+    view: "licenseInventory"
+  });
+
+};
+
+
+
+private _openNewLicense = (): void => {
 
   this.setState({
 
-    view: 'licenses',
-
-    selectedClient: undefined,
+    view: 'newLicense',
 
     error: ''
 
@@ -744,40 +761,92 @@ item.VendorEmailSent !== true
         />
       );
     }
-    if (
-  this.state.view ===
-  'licenses'
+    
+ if (
+  this.state.view === 'licenseInventory'
+) {
+
+  return (
+
+    <LicenseInventoryView
+
+      serviceContext={{
+        spHttpClient:this.props.spHttpClient,
+        spHttpClientConfiguration:this.props.spHttpClientConfiguration,
+        webAbsoluteUrl:this.props.webAbsoluteUrl
+      }}
+
+      onAddLicense={
+        this._openNewLicense
+      }
+
+      onBack={
+        this._openLicenses
+      }
+
+    />
+
+  );
+
+}
+if (
+  this.state.view === 'newLicense'
+) {
+
+  return (
+
+    <NewLicense
+
+      serviceContext={{
+        spHttpClient:this.props.spHttpClient,
+        spHttpClientConfiguration:this.props.spHttpClientConfiguration,
+        webAbsoluteUrl:this.props.webAbsoluteUrl
+      }}
+
+      onBack={
+        this._openLicenseInventory
+      }
+
+    />
+
+  );
+
+}
+
+
+if (
+  this.state.view === 'licenses'
 ) {
 
   return (
 
     <LicenseMatrixView
 
-serviceContext={{
-spHttpClient:this.props.spHttpClient,
-spHttpClientConfiguration:
-this.props.spHttpClientConfiguration,
-webAbsoluteUrl:
-this.props.webAbsoluteUrl
-}}
+      serviceContext={{
+        spHttpClient:this.props.spHttpClient,
+        spHttpClientConfiguration:this.props.spHttpClientConfiguration,
+        webAbsoluteUrl:this.props.webAbsoluteUrl
+      }}
 
-onBack={
-this._backToDashboard
-}
+      onBack={
+        this._backToDashboard
+      }
 
-onClientSelect={
-this._openClientLicenses
-}
-onNewAllocation={
-this._openNewLicenseAllocation
-}
+      onClientSelect={
+        this._openClientLicenses
+      }
 
+      onNewAllocation={
+        this._openNewLicenseAllocation
+      }
 
-/>
+    />
 
   );
 
 }
+
+
 if (
   this.state.view ===
   'clientLicenses'
@@ -1062,7 +1131,11 @@ if (
           <nav className={styles.navigation}>
 
             <button
-              className={`${styles.navItem} ${styles.navItemActive}`}
+              className={
+              this.state.view === 'dashboard'
+                ? `${styles.navItem} ${styles.navItemActive}`
+                : styles.navItem
+            }
             >
               <span className={styles.navIcon}>
                 ⌂

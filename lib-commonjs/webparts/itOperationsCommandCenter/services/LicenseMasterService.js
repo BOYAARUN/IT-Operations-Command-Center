@@ -11,14 +11,23 @@ var LicenseMasterService = /** @class */ (function (_super) {
     LicenseMasterService.prototype.getLicenses = function () {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
             return tslib_1.__generator(this, function (_a) {
-                return [2 /*return*/, this.getItems("License Master", "?$select=\nId,\nTitle,\nVendor,\nTotalLicense,\nRenewalDate,\nActive\n\n&$orderby=Title")];
+                return [2 /*return*/, this.getItems("License Master", "?$select=\n      Id,\n      Title,\n      Vendor,\n      TotalLicense,\n      RenewalDate,\n      Active\n      &$orderby=Title")];
             });
         });
     };
     LicenseMasterService.prototype.createLicense = function (data) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var payload;
             return tslib_1.__generator(this, function (_a) {
-                return [2 /*return*/, this.postItem("License Master", data)];
+                payload = {
+                    Title: data.Title,
+                    Vendor: data.Vendor || "",
+                    TotalLicense: Number(data.TotalLicense),
+                    RenewalDate: data.RenewalDate || null,
+                    Active: Boolean(data.Active)
+                };
+                console.log("Creating License:", payload);
+                return [2 /*return*/, this.postItem("License Master", payload)];
             });
         });
     };
