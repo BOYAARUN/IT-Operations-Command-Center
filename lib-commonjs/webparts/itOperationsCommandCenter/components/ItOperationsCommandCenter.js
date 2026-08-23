@@ -443,7 +443,7 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
                     spHttpClient: this.props.spHttpClient,
                     spHttpClientConfiguration: this.props.spHttpClientConfiguration,
                     webAbsoluteUrl: this.props.webAbsoluteUrl
-                }, onClientSelect: this._openClientLicenses }));
+                }, onBack: this._backToDashboard, onClientSelect: this._openClientLicenses, onNewAllocation: this._openNewLicenseAllocation }));
         }
         if (this.state.view ===
             'clientLicenses'
@@ -455,8 +455,7 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
                     webAbsoluteUrl: this.props.webAbsoluteUrl
                 }, clientName: this.state.selectedClient, onBack: this._openLicenses, onNewAllocation: this._openNewLicenseAllocation }));
         }
-        if (this.state.view ===
-            'newLicenseAllocation') {
+        if (this.state.view === "newLicenseAllocation") {
             return (React.createElement(NewLicenseAllocation_1.default, { serviceContext: {
                     spHttpClient: this.props.spHttpClient,
                     spHttpClientConfiguration: this.props.spHttpClientConfiguration,

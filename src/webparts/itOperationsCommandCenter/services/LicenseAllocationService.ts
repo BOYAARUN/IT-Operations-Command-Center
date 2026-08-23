@@ -3,127 +3,183 @@ import {
   SharePointService
 } from "./ISharePointService";
 
+
 export interface ILicenseAllocation {
-  Id: number;
 
-  Title?: string;
+  Id:number;
 
-  Employee?: {
-    Id: number;
-    Title: string;
-    EMail?: string;
+  Client?:{
+    Id:number;
+    Title:string;
   };
 
-  Client?: string;
-
-  License?: {
-    Id: number;
-    Title: string;
+  EmployeeName?:{
+    Id:number;
+    Title:string;
+    EMail?:string;
   };
 
-  AllocationDate?: string;
+  License?:{
+    Id:number;
+    Title:string;
+  };
 
-  Status?: string;
+  Status?:{
+    Value:string;
+  } | string;
 
-  Notes?: string;
+  AllocatedDate?:string;
+
+  ReleasedDate?:string;
+
 }
+
 
 
 export class LicenseAllocationService extends SharePointService {
 
-  public constructor(context: ISharePointServiceContext) {
-    super(context);
-  }
 
+constructor(
+context:ISharePointServiceContext
+){
 
-  // Get all allocations
-  public async getAllocations(): Promise<ILicenseAllocation[]> {
+super(context);
 
-    return this.getItems<ILicenseAllocation>(
-      "License Allocations",
-      `?$select=
-      Id,
-      Title,
-      Client,
-      AllocationDate,
-      Status,
-      Notes,
-      Employee/Id,
-      Employee/Title,
-      Employee/EMail,
-      License/Id,
-      License/Title
-      &$expand=Employee,License
-      &$orderby=Id desc
-      &$top=5000`
-    );
-
-  }
+}
 
 
 
-  // Get licenses by client
-
-  public async getClientAllocations(
-    clientName:string
-  ):Promise<ILicenseAllocation[]> {
+public async getAllocations()
+:Promise<ILicenseAllocation[]> {
 
 
-    return this.getItems<ILicenseAllocation>(
-      "License Allocations",
-      `?$select=
-      Id,
-      Title,
-      Client,
-      AllocationDate,
-      Status,
-      Notes,
-      Employee/Id,
-      Employee/Title,
-      Employee/EMail,
-      License/Id,
-      License/Title
-      &$expand=Employee,License
-      &$filter=Client eq '${clientName}'
-      &$orderby=Id desc`
-    );
+return this.getItems<ILicenseAllocation>(
 
-  }
+"License Allocations",
+
+`?$select=
+Id,
+Status,
+AllocatedDate,
+ReleasedDate,
+
+Client/Id,
+Client/Title,
+
+EmployeeName/Id,
+EmployeeName/Title,
+EmployeeName/EMail,
+
+License/Id,
+License/Title
+
+&$expand=
+Client,
+EmployeeName,
+License
+
+&$orderby=Id desc
+
+&$top=5000`
+
+);
+
+
+}
 
 
 
 
-  // Create new allocation
-
-  public async createAllocation(
-    payload:any
-  ):Promise<ILicenseAllocation>{
-
-
-    return this.postItem<ILicenseAllocation>(
-      "License Allocations",
-      payload
-    );
-
-  }
+public async getClientAllocations(
+clientName:string
+)
+:Promise<ILicenseAllocation[]> {
 
 
+const data =
+await this.getAllocations();
 
 
-  // Remove / update allocation
+return data.filter(
 
-  public async updateAllocation(
-    id:number,
-    payload:any
-  ):Promise<void>{
+item =>
 
-    await this.updateItem(
-      "License Allocations",
-      id,
-      payload
-    );
+item.Client?.Title === clientName
 
-  }
+);
+
+
+}
+
+
+
+
+public async removeAllocation(
+id:number
+):Promise<void>{
+
+
+await this.updateItem(
+
+"License Allocations",
+
+id,
+
+{
+
+Status:"Released",
+
+ReleasedDate:
+new Date().toISOString()
+
+}
+
+);
+
+
+}
+
+
+
+
+public async createAllocation(
+payload:any
+):Promise<any>{
+
+
+return this.postItem(
+
+"License Allocations",
+
+payload
+
+);
+
+
+}
+
+
+
+
+public async updateAllocation(
+id:number,
+payload:any
+):Promise<void>{
+
+
+await this.updateItem(
+
+"License Allocations",
+
+id,
+
+payload
+
+);
+
+
+}
+
 
 
 }

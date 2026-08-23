@@ -1,339 +1,600 @@
 import * as React from "react";
 import styles from "./LicenseMatrixView.module.scss";
+
 import {
   LicenseAllocationService,
   ILicenseAllocation
 } from "../../services/LicenseAllocationService";
 
+
 interface IProps {
-  serviceContext: any;
-  onClientSelect?: (client: string) => void;
+
+  serviceContext:any;
+
+  onBack?:()=>void;
+
+  onClientSelect?:(client:string)=>void;
+
+  onNewAllocation?:()=>void;
+
+  onInventory?:()=>void;
+
 }
+
 
 interface IState {
-  loading: boolean;
-  allocations: ILicenseAllocation[];
-  clients: string[];
-  licenses: string[];
-  error?: string;
+
+  allocations:ILicenseAllocation[];
+
+  clients:string[];
+
+  licenses:string[];
+
+  loading:boolean;
+
+  error?:string;
+
 }
 
 
-export default class LicenseMatrixView extends React.Component<
-  IProps,
-  IState
-> {
 
-  private service: LicenseAllocationService;
+export default class LicenseMatrixView 
+extends React.Component<IProps,IState>{
 
 
-  constructor(props: IProps) {
-    super(props);
+private service:LicenseAllocationService;
 
-    this.service = new LicenseAllocationService(
-      props.serviceContext
-    );
 
-    this.state = {
-      loading: true,
-      allocations: [],
-      clients: [],
-      licenses: []
-    };
-  }
 
+constructor(props:IProps){
 
-  public async componentDidMount() {
+super(props);
 
-    await this.loadData();
 
-  }
+this.service =
+new LicenseAllocationService(
+props.serviceContext
+);
 
 
 
-  private async loadData() {
+this.state={
 
-    try {
+allocations:[],
 
-      const data =
-        await this.service.getAllocations();
+clients:[],
 
+licenses:[],
 
-      const clients =
-        Array.from(
-          new Set(
-            data
-              .map(x => x.Client)
-              .filter(Boolean)
-          )
-        ) as string[];
+loading:true
 
+};
 
 
-      const licenses =
-        Array.from(
-          new Set(
-            data.map(
-              x =>
-                x.License?.Title
-            )
-            .filter(Boolean)
-          )
-        ) as string[];
+}
 
 
 
-      this.setState({
+public async componentDidMount(){
 
-        allocations:data,
+await this.loadData();
 
-        clients,
+}
 
-        licenses,
 
-        loading:false
 
-      });
+private async loadData(){
 
+try{
 
-    }
-    catch(error){
 
-      this.setState({
+const data =
+await this.service.getAllocations();
 
-        loading:false,
 
-        error:
-          "Unable to load license allocations"
 
-      });
+const active =
+data.filter(
+item =>
+this.getStatus(item.Status) !== "Released"
+);
 
-    }
 
-  }
 
+const clients:string[] =
+Array.from(
+new Set(
+active.map(
+x=>x.Client?.Title || ""
+)
+)
+).filter(Boolean);
 
 
-  private getCount(
-    client:string,
-    license:string
-  ){
 
-    return this.state.allocations.filter(
+const licenses:string[] =
+Array.from(
+new Set(
+active.map(
+x=>x.License?.Title || ""
+)
+)
+).filter(Boolean);
 
-      x =>
-        x.Client === client &&
-        x.License?.Title === license &&
-        x.Status !== "Removed"
 
-    ).length;
 
-  }
+this.setState({
 
+allocations:active,
 
+clients,
 
-  private openClient(client:string){
+licenses,
 
-    if(this.props.onClientSelect){
+loading:false
 
-      this.props.onClientSelect(client);
+});
 
-    }
 
-  }
+}
 
+catch(error){
 
+this.setState({
 
-  public render(){
+loading:false,
 
-    const {
-      loading,
-      clients,
-      licenses,
-      error
-    } = this.state;
+error:"Unable to load license allocations"
 
+});
 
+}
 
-    if(loading){
 
-      return (
+}
 
-        <div className={styles.loading}>
-          Loading licenses...
-        </div>
 
-      );
 
-    }
+private getStatus(status:any){
 
+if(typeof status==="string"){
 
+return status;
 
-    if(error){
+}
 
-      return (
+return status?.Value || "";
 
-        <div className={styles.error}>
-          {error}
-        </div>
+}
 
-      );
 
-    }
 
+private getCount(
+client:string,
+license:string
+){
 
+return this.state.allocations.filter(
 
-    return (
+item =>
 
-      <div className={styles.page}>
+item.Client?.Title === client &&
 
+item.License?.Title === license
 
-        <div className={styles.header}>
+).length;
 
-          <div>
 
-            <h2>
-              License Allocation Matrix
-            </h2>
+}
 
-            <span>
-              Client wise license utilization
-            </span>
 
-          </div>
 
+private getTotal(
+client:string
+){
 
-        </div>
+return this.state.allocations.filter(
 
+item =>
+item.Client?.Title === client
 
+).length;
 
-        <div className={styles.tableContainer}>
+}
 
 
-          <table>
 
+private getLicenseTotal(
+license:string
+){
 
-            <thead>
+return this.state.allocations.filter(
 
+item =>
+item.License?.Title === license
 
-              <tr>
+).length;
 
+}
 
-                <th>
-                  Client
-                </th>
 
 
-                {
-                  licenses.map(
+public render(){
 
-                    license => (
 
-                      <th key={license}>
-                        {license}
-                      </th>
+if(this.state.loading){
 
-                    )
+return (
 
-                  )
-                }
+<div className={styles.loading}>
+Loading license matrix...
+</div>
 
+);
 
-              </tr>
+}
 
 
-            </thead>
 
+return (
 
+<div className={styles.page}>
 
-            <tbody>
 
+<div className={styles.header}>
 
-            {
-              clients.map(
 
-                client => (
+<div>
 
-                  <tr
-                    key={client}
-                    onClick={() =>
-                      this.openClient(client)
-                    }
-                  >
+<h1>
+License Allocation Matrix
+</h1>
 
+<p>
+Client wise license usage overview
+</p>
 
-                    <td className={styles.clientName}>
+</div>
 
-                      {client}
 
-                    </td>
 
+<div className={styles.actions}>
 
-                    {
-                      licenses.map(
 
-                        license => (
+<button
+className={styles.backButton}
+onClick={this.props.onBack}
+>
+← Dashboard
+</button>
 
-                          <td key={license}>
 
-                            <span
-                              className={
-                                styles.count
-                              }
-                            >
 
-                              {
-                                this.getCount(
-                                  client,
-                                  license
-                                )
-                              }
+<button
+className={styles.primaryButton}
+onClick={this.props.onNewAllocation}
+>
+＋ Allocate License
+</button>
 
-                            </span>
 
-                          </td>
 
-                        )
+<button
+className={styles.primaryButton}
+onClick={this.props.onInventory}
+>
+▣ License Inventory
+</button>
 
-                      )
-                    }
 
+</div>
 
-                  </tr>
 
-                )
+</div>
 
-              )
-            }
 
 
-            </tbody>
 
 
-          </table>
+<div className={styles.cards}>
 
 
-        </div>
+<div className={styles.card}>
 
+<span>
+Total Clients
+</span>
 
+<strong>
+{this.state.clients.length}
+</strong>
 
-        {
-          clients.length === 0 &&
+<small>
+Active Clients
+</small>
 
-          <div className={styles.empty}>
+</div>
 
-            No license allocations found
 
-          </div>
 
-        }
+<div className={styles.card}>
 
+<span>
+Total Licenses
+</span>
 
-      </div>
+<strong>
+{this.state.licenses.length}
+</strong>
 
-    );
+<small>
+License Types
+</small>
 
-  }
+</div>
+
+
+
+
+<div className={styles.card}>
+
+<span>
+Total Allocations
+</span>
+
+<strong>
+{this.state.allocations.length}
+</strong>
+
+<small>
+Active Allocations
+</small>
+
+</div>
+
+
+
+
+<div className={styles.card}>
+
+<span>
+Available Licenses
+</span>
+
+<strong>
+-
+</strong>
+
+<small>
+Not Allocated
+</small>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div className={styles.matrixBox}>
+
+
+<div className={styles.matrixHeader}>
+
+<div>
+
+<h2>
+License Allocation Matrix
+</h2>
+
+<p>
+Client license allocation overview
+</p>
+
+</div>
+
+
+
+<input
+
+className={styles.search}
+
+placeholder="Search client..."
+
+ />
+
+</div>
+
+
+
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+Client
+</th>
+
+
+{
+this.state.licenses.map(
+license=>(
+
+<th key={license}>
+{license}
+</th>
+
+)
+
+)
+}
+
+
+
+<th>
+Total
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+
+<tbody>
+
+
+
+{
+this.state.clients.map(
+client=>(
+
+
+<tr
+key={client}
+onClick={()=>{
+
+if(this.props.onClientSelect){
+
+this.props.onClientSelect(client);
+
+}
+
+}}
+>
+
+
+
+<td>
+{client}
+</td>
+
+
+
+{
+
+this.state.licenses.map(
+license=>(
+
+<td key={license}>
+
+<span
+className={
+this.getCount(client,license)
+?
+styles.greenBadge
+:
+styles.greyBadge
+}
+>
+
+{
+this.getCount(
+client,
+license
+)
+}
+
+</span>
+
+</td>
+
+)
+
+)
+
+}
+
+
+
+
+<td>
+
+  <span className={styles.blueBadge}>
+    {this.getTotal(client)}
+  </span>
+
+</td>
+
+</tr>
+
+)
+)
+}
+
+
+<tr className={styles.summary}>
+
+
+<td>
+Total Summary
+</td>
+
+
+{
+
+this.state.licenses.map(
+license=>(
+
+<td key={license}>
+
+{
+this.getLicenseTotal(license)
+}
+
+</td>
+
+)
+
+)
+
+
+}
+
+
+<td>
+
+{
+this.state.allocations.length
+}
+
+</td>
+
+
+</tr>
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+</div>
+
+
+
+</div>
+
+
+);
+
+
+}
+
 
 
 }

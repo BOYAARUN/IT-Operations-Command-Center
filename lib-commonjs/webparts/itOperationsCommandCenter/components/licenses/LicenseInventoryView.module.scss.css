@@ -1,0 +1,81 @@
+.page {
+  padding: 24px;
+  background: #f8fafc;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.header p {
+  color: #64748b;
+}
+
+.addButton {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.backButton {
+  background: white;
+  border: 1px solid #d1d5db;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stats div {
+  text-align: center;
+}
+
+.stats span {
+  display: block;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.stats strong {
+  font-size: 24px;
+}
+
+.loading {
+  padding: 40px;
+  text-align: center;
+}
+/*# sourceMappingURL=LicenseInventoryView.module.scss.css.map */

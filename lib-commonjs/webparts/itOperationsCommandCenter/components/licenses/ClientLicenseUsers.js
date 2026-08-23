@@ -8,12 +8,8 @@ var ClientLicenseUsers = /** @class */ (function (_super) {
     tslib_1.__extends(ClientLicenseUsers, _super);
     function ClientLicenseUsers(props) {
         var _this = _super.call(this, props) || this;
-        _this.service =
-            new LicenseAllocationService_1.LicenseAllocationService(props.serviceContext);
-        _this.state = {
-            loading: true,
-            allocations: []
-        };
+        _this.service = new LicenseAllocationService_1.LicenseAllocationService(props.serviceContext);
+        _this.state = { loading: true, allocations: [] };
         return _this;
     }
     ClientLicenseUsers.prototype.componentDidMount = function () {
@@ -38,17 +34,11 @@ var ClientLicenseUsers = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.service.getClientAllocations(this.props.clientName)];
                     case 1:
                         data = _a.sent();
-                        this.setState({
-                            allocations: data,
-                            loading: false
-                        });
+                        this.setState({ allocations: data, loading: false });
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();
-                        this.setState({
-                            loading: false,
-                            error: "Unable to load license users"
-                        });
+                        this.setState({ loading: false, error: "Unable to load license users" });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -59,9 +49,7 @@ var ClientLicenseUsers = /** @class */ (function (_super) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.service.updateAllocation(id, {
-                            Status: "Removed"
-                        })];
+                    case 0: return [4 /*yield*/, this.service.removeAllocation(id)];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.loadUsers()];
@@ -74,20 +62,18 @@ var ClientLicenseUsers = /** @class */ (function (_super) {
     };
     ClientLicenseUsers.prototype.render = function () {
         var _this = this;
-        if (this.state.loading) {
-            return (React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.loading }, "Loading users..."));
-        }
-        if (this.state.error) {
-            return (React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.error }, this.state.error));
-        }
-        return (React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.page },
+        if (this.state.loading)
+            return React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.loading }, "Loading users...");
+        if (this.state.error)
+            return React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.error }, this.state.error);
+        return React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.page },
             React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.header },
                 React.createElement("div", null,
                     React.createElement("h2", null, this.props.clientName),
                     React.createElement("span", null, "License allocations")),
                 React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.actions },
-                    React.createElement("button", { className: ClientLicenseUsers_module_scss_1.default.secondary, onClick: this.props.onBack }, "Back"),
-                    React.createElement("button", { className: ClientLicenseUsers_module_scss_1.default.primary, onClick: this.props.onNewAllocation }, "+ New License Allocation"))),
+                    React.createElement("button", { className: ClientLicenseUsers_module_scss_1.default.secondary, onClick: this.props.onBack }, "\u2190 Dashboard"),
+                    React.createElement("button", { className: ClientLicenseUsers_module_scss_1.default.primary, onClick: this.props.onNewAllocation }, "+ Allocate License"))),
             React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.tableCard },
                 React.createElement("table", null,
                     React.createElement("thead", null,
@@ -95,30 +81,27 @@ var ClientLicenseUsers = /** @class */ (function (_super) {
                             React.createElement("th", null, "Employee"),
                             React.createElement("th", null, "License"),
                             React.createElement("th", null, "Status"),
-                            React.createElement("th", null, "Allocation Date"),
+                            React.createElement("th", null, "Allocated Date"),
                             React.createElement("th", null, "Action"))),
                     React.createElement("tbody", null, this.state.allocations.map(function (item) {
                         var _a, _b, _c;
-                        return (React.createElement("tr", { key: item.Id },
+                        return React.createElement("tr", { key: item.Id },
                             React.createElement("td", null,
-                                React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.employee },
-                                    React.createElement("strong", null, (_a = item.Employee) === null || _a === void 0 ? void 0 : _a.Title),
-                                    React.createElement("span", null, (_b = item.Employee) === null || _b === void 0 ? void 0 : _b.EMail))),
-                            React.createElement("td", null, (_c = item.License) === null || _c === void 0 ? void 0 : _c.Title),
+                                React.createElement("strong", null, ((_a = item.EmployeeName) === null || _a === void 0 ? void 0 : _a.Title) || "-"),
+                                React.createElement("br", null),
+                                React.createElement("small", null, (_b = item.EmployeeName) === null || _b === void 0 ? void 0 : _b.EMail)),
+                            React.createElement("td", null, ((_c = item.License) === null || _c === void 0 ? void 0 : _c.Title) || "-"),
+                            React.createElement("td", null, typeof item.Status === "object"
+                                ? item.Status.Value
+                                : item.Status),
+                            React.createElement("td", null, item.AllocatedDate
+                                ? new Date(item.AllocatedDate).toLocaleDateString()
+                                : "-"),
                             React.createElement("td", null,
-                                React.createElement("span", { className: ClientLicenseUsers_module_scss_1.default.status }, item.Status || "Active")),
-                            React.createElement("td", null, item.AllocationDate
-                                ?
-                                    new Date(item.AllocationDate).toLocaleDateString()
-                                :
-                                    "-"),
-                            React.createElement("td", null,
-                                React.createElement("button", { className: ClientLicenseUsers_module_scss_1.default.remove, onClick: function () {
-                                        return _this.removeAllocation(item.Id);
-                                    } }, "Remove"))));
+                                React.createElement("button", { className: ClientLicenseUsers_module_scss_1.default.remove, onClick: function () { return _this.removeAllocation(item.Id); } }, "Remove")));
                     }))),
                 this.state.allocations.length === 0 &&
-                    React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.empty }, "No license allocations found"))));
+                    React.createElement("div", { className: ClientLicenseUsers_module_scss_1.default.empty }, "No license allocations found")));
     };
     return ClientLicenseUsers;
 }(React.Component));

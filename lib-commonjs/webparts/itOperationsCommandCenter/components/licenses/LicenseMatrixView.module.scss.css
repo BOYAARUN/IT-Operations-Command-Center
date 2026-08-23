@@ -1,82 +1,222 @@
 .page {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid #e5e7eb;
+  background: #f7f9fc;
+  min-height: 100%;
+  padding: 32px;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .header {
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
-.header h2 {
+.header h1 {
   margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #172554;
+}
+
+.header p {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.backButton,
+.primaryButton {
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.backButton {
+  background: white;
+  border: 1px solid #dbe3f0;
+  color: #1e293b;
+}
+
+.primaryButton {
+  background: #2563eb;
+  border: none;
+  color: white;
+}
+
+.primaryButton:hover {
+  background: #1d4ed8;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.card span {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.card strong {
+  margin-top: 12px;
+  font-size: 36px;
+  color: #2563eb;
+}
+
+.card small {
+  margin-top: 8px;
+  color: #64748b;
+}
+
+.matrixBox {
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+.matrixHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.matrixHeader h2 {
+  margin: 0;
+  color: #172554;
   font-size: 22px;
 }
 
-.header span {
+.matrixHeader p {
+  margin-top: 6px;
   color: #64748b;
-  font-size: 13px;
 }
 
-.tableContainer {
-  overflow-x: auto;
+.search {
+  width: 260px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid #dbe3f0;
+  padding: 0 15px;
+  font-size: 14px;
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 14px;
 }
 
-th {
-  background: #f8fafc;
-  padding: 14px;
+thead th {
+  background: #f1f5ff;
+  color: #172554;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 22px;
   text-align: center;
-  font-size: 13px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+thead th:first-child {
+  text-align: left;
+}
+
+tbody td {
+  padding: 25px;
+  text-align: center;
   border-bottom: 1px solid #e5e7eb;
+  font-size: 15px;
+  color: #334155;
 }
 
-td {
-  padding: 14px;
-  text-align: center;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-tbody tr {
-  cursor: pointer;
+tbody td:first-child {
+  text-align: left;
+  font-weight: 600;
+  color: #0f172a;
 }
 
 tbody tr:hover {
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.summary {
   background: #eff6ff;
+  font-weight: 700;
 }
 
-.clientName {
-  text-align: left;
-  font-weight: 600;
-  color: #1e293b;
+.summary td {
+  color: #2563eb;
+  font-size: 18px;
 }
 
-.count {
+.greenBadge,
+.greyBadge,
+.blueBadge {
   display: inline-flex;
-  min-width: 35px;
-  height: 35px;
-  align-items: center;
   justify-content: center;
-  background: #2563eb;
-  color: white;
+  align-items: center;
+  min-width: 38px;
+  height: 38px;
   border-radius: 50%;
   font-weight: 700;
 }
 
-.loading,
-.error,
-.empty {
-  padding: 40px;
-  text-align: center;
+.greenBadge {
+  background: #dcfce7;
+  color: #15803d;
 }
 
-.error {
-  background: #fee2e2;
-  color: #991b1b;
+.greyBadge {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.blueBadge {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.loading {
+  padding: 40px;
+  text-align: center;
+  font-size: 18px;
+  color: #475569;
+}
+
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .matrixBox {
+    overflow: auto;
+  }
 }
 /*# sourceMappingURL=LicenseMatrixView.module.scss.css.map */

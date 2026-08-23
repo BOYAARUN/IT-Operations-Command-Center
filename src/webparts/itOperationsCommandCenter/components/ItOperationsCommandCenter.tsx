@@ -1,3 +1,5 @@
+import LicenseInventoryView from "./licenses/LicenseInventoryView";
+import NewLicense from "./licenses/NewLicense";
 import * as React from 'react';
 import styles from './ItOperationsCommandCenter.module.scss';
 import type { IItOperationsCommandCenterProps } from './IItOperationsCommandCenterProps';
@@ -74,7 +76,8 @@ interface ILicenseResponse {
   value: ILicenseItem[];
 }
 
-type IView =
+
+  type IView =
   | 'dashboard'
   | 'newJoiners'
   | 'newJoinerForm'
@@ -750,17 +753,27 @@ item.VendorEmailSent !== true
 
     <LicenseMatrixView
 
-      serviceContext={{
-            spHttpClient: this.props.spHttpClient,
-            spHttpClientConfiguration: this.props.spHttpClientConfiguration,
-            webAbsoluteUrl: this.props.webAbsoluteUrl
-          }}
+serviceContext={{
+spHttpClient:this.props.spHttpClient,
+spHttpClientConfiguration:
+this.props.spHttpClientConfiguration,
+webAbsoluteUrl:
+this.props.webAbsoluteUrl
+}}
 
-      onClientSelect={
-        this._openClientLicenses
-      }
+onBack={
+this._backToDashboard
+}
 
-    />
+onClientSelect={
+this._openClientLicenses
+}
+onNewAllocation={
+this._openNewLicenseAllocation
+}
+
+
+/>
 
   );
 
@@ -799,36 +812,41 @@ if (
   );
 
 }
-    if (
-  this.state.view ===
-  'newLicenseAllocation'
-) {
+    if(
+ this.state.view === "newLicenseAllocation"
+){
 
-  return (
+ return (
 
-    <NewLicenseAllocation
+ <NewLicenseAllocation
 
-      serviceContext={{
-            spHttpClient: this.props.spHttpClient,
-            spHttpClientConfiguration: this.props.spHttpClientConfiguration,
-            webAbsoluteUrl: this.props.webAbsoluteUrl
-          }}
+ serviceContext={{
 
-      clientName={
-        this.state.selectedClient
-      }
+ spHttpClient:this.props.spHttpClient,
 
-      onCancel={
-        this._openLicenses
-      }
+ spHttpClientConfiguration:
+ this.props.spHttpClientConfiguration,
 
-      onSaved={
-        this._openLicenses
-      }
+ webAbsoluteUrl:
+ this.props.webAbsoluteUrl
 
-    />
+ }}
 
-  );
+ clientName={
+ this.state.selectedClient
+ }
+
+ onCancel={
+ this._openLicenses
+ }
+
+ onSaved={
+ this._openLicenses
+ }
+
+ />
+
+ );
 
 }
     if (

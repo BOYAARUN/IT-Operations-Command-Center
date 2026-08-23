@@ -22,6 +22,8 @@ interface IProps {
 
   clientName?:string;
 
+  clientId?:number;
+
   onSaved?:()=>void;
 
   onCancel?:()=>void;
@@ -39,10 +41,6 @@ interface IState {
 
   selectedLicense:string;
 
-  allocationDate:string;
-
-  notes:string;
-
   loading:boolean;
 
   saving:boolean;
@@ -53,10 +51,8 @@ interface IState {
 
 
 
-export default class NewLicenseAllocation extends React.Component<
-IProps,
-IState
->{
+export default class NewLicenseAllocation
+extends React.Component<IProps,IState>{
 
 
 private allocationService:LicenseAllocationService;
@@ -101,13 +97,6 @@ selectedEmployee:"",
 
 selectedLicense:"",
 
-allocationDate:
-new Date()
-.toISOString()
-.substring(0,10),
-
-notes:"",
-
 loading:true,
 
 saving:false
@@ -129,8 +118,12 @@ await this.loadData();
 
 private async loadData(){
 
+try{
+
+
 const employees =
 await this.employeeService.getEmployees();
+
 
 
 const licenses =
@@ -150,6 +143,29 @@ loading:false
 
 
 }
+
+catch(error){
+
+console.error(
+"Load allocation data error",
+error
+);
+
+
+this.setState({
+
+loading:false,
+
+message:
+"Unable to load employees or licenses"
+
+});
+
+
+}
+
+}
+
 
 
 
@@ -190,27 +206,31 @@ await this.allocationService.createAllocation({
 Title:
 "License Allocation",
 
-EmployeeId:
+
+EmployeeNameId:
 Number(
 this.state.selectedEmployee
 ),
+
 
 LicenseId:
 Number(
 this.state.selectedLicense
 ),
 
-Client:
-this.props.clientName || "",
 
-AllocationDate:
-this.state.allocationDate,
+ClientId:
+this.props.clientId || null,
+
+
+AllocatedDate:
+new Date()
+.toISOString(),
+
 
 Status:
-"Active",
+"Active"
 
-Notes:
-this.state.notes
 
 });
 
@@ -218,13 +238,12 @@ this.state.notes
 
 this.setState({
 
-message:
-"License allocated successfully",
+saving:false,
 
-saving:false
+message:
+"License allocated successfully"
 
 });
-
 
 
 if(this.props.onSaved){
@@ -240,12 +259,18 @@ this.props.onSaved();
 catch(error){
 
 
+console.error(
+"Create allocation error",
+error
+);
+
+
 this.setState({
 
-message:
-"Unable to create allocation",
+saving:false,
 
-saving:false
+message:
+"Unable to allocate license"
 
 });
 
@@ -261,19 +286,18 @@ saving:false
 public render(){
 
 
-if(this.state.loading){
 
+if(this.state.loading){
 
 return (
 
 <div className={styles.loading}>
 
-Loading...
+Loading allocation form...
 
 </div>
 
 );
-
 
 }
 
@@ -286,18 +310,47 @@ return (
 
 <div className={styles.header}>
 
+
+<div>
+
 <h2>
 
-New License Allocation
+Allocate License
 
 </h2>
+
+<p>
+
+Assign license to employee
+
+</p>
+
+</div>
+
+
+
+<button
+
+className={styles.secondaryButton}
+
+onClick={
+this.props.onCancel
+}
+
+>
+
+← Back
+
+</button>
+
 
 
 </div>
 
 
 
-<div className={styles.form}>
+
+<div className={styles.card}>
 
 
 <label>
@@ -315,12 +368,14 @@ this.state.selectedEmployee
 
 onChange={
 e=>
+
 this.setState({
 
 selectedEmployee:
 e.target.value
 
 })
+
 }
 
 >
@@ -333,21 +388,25 @@ Select Employee
 </option>
 
 
+
 {
 
 this.state.employees.map(
-emp=>(
+
+emp=>
 
 <option
+
 key={emp.Id}
+
 value={emp.Id}
+
 >
 
 {emp.Title}
 
 </option>
 
-)
 )
 
 }
@@ -373,12 +432,14 @@ this.state.selectedLicense
 
 onChange={
 e=>
+
 this.setState({
 
 selectedLicense:
 e.target.value
 
 })
+
 }
 
 >
@@ -391,21 +452,24 @@ Select License
 </option>
 
 
+
 {
 
 this.state.licenses.map(
-license=>(
+
+license=>
 
 <option
+
 key={license.Id}
+
 value={license.Id}
+
 >
 
 {license.Title}
 
 </option>
-
-)
 
 )
 
@@ -417,59 +481,19 @@ value={license.Id}
 
 
 
-<label>
+{
 
-Allocation Date
-
-</label>
+this.state.message &&
 
 
-<input
+<div className={styles.message}>
 
-type="date"
+{this.state.message}
 
-value={
-this.state.allocationDate
+</div>
+
 }
 
-onChange={
-e=>
-this.setState({
-
-allocationDate:
-e.target.value
-
-})
-}
-
-/>
-
-
-
-<label>
-
-Notes
-
-</label>
-
-
-<textarea
-
-value={
-this.state.notes
-}
-
-onChange={
-e=>
-this.setState({
-
-notes:
-e.target.value
-
-})
-}
-
-/>
 
 
 
@@ -478,7 +502,7 @@ e.target.value
 
 <button
 
-className={styles.cancel}
+className={styles.cancelButton}
 
 onClick={
 this.props.onCancel
@@ -494,7 +518,7 @@ Cancel
 
 <button
 
-className={styles.save}
+className={styles.saveButton}
 
 disabled={
 this.state.saving
@@ -507,33 +531,24 @@ onClick={
 >
 
 {
-this.state.saving
-?
-"Saving..."
-:
-"Save Allocation"
-}
 
+this.state.saving
+
+?
+
+"Saving..."
+
+:
+
+"Allocate License"
+
+}
 
 </button>
 
 
-</div>
-
-
-
-{
-
-this.state.message &&
-
-<div className={styles.message}>
-
-{this.state.message}
 
 </div>
-
-}
-
 
 
 </div>
