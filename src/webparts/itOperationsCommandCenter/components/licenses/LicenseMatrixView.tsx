@@ -6,6 +6,11 @@ import {
   ILicenseAllocation
 } from "../../services/LicenseAllocationService";
 
+import {
+  LicenseService,
+  ILicense
+} from "../../services/LicenseService";
+
 
 interface IProps {
 
@@ -30,6 +35,8 @@ interface IState {
 
   licenses:string[];
 
+  licenseMaster:ILicense[];
+
   loading:boolean;
 
   error?:string;
@@ -38,11 +45,13 @@ interface IState {
 
 
 
-export default class LicenseMatrixView 
+export default class LicenseMatrixView
 extends React.Component<IProps,IState>{
 
 
 private service:LicenseAllocationService;
+
+private licenseService:LicenseService;
 
 
 
@@ -57,6 +66,12 @@ props.serviceContext
 );
 
 
+this.licenseService =
+new LicenseService(
+props.serviceContext
+);
+
+
 
 this.state={
 
@@ -65,6 +80,8 @@ allocations:[],
 clients:[],
 
 licenses:[],
+
+licenseMaster:[],
 
 loading:true
 
@@ -93,6 +110,11 @@ await this.service.getAllocations();
 
 
 
+const master =
+await this.licenseService.getLicenses();
+
+
+
 const active =
 data.filter(
 item =>
@@ -115,8 +137,8 @@ x=>x.Client?.Title || ""
 const licenses:string[] =
 Array.from(
 new Set(
-active.map(
-x=>x.License?.Title || ""
+master.map(
+x=>x.Title
 )
 )
 ).filter(Boolean);
@@ -131,6 +153,8 @@ clients,
 
 licenses,
 
+licenseMaster:master,
+
 loading:false
 
 });
@@ -140,11 +164,13 @@ loading:false
 
 catch(error){
 
+console.error(error);
+
 this.setState({
 
 loading:false,
 
-error:"Unable to load license allocations"
+error:"Unable to load license data"
 
 });
 
@@ -184,7 +210,6 @@ item.License?.Title === license
 
 ).length;
 
-
 }
 
 
@@ -196,6 +221,7 @@ client:string
 return this.state.allocations.filter(
 
 item =>
+
 item.Client?.Title === client
 
 ).length;
@@ -211,6 +237,7 @@ license:string
 return this.state.allocations.filter(
 
 item =>
+
 item.License?.Title === license
 
 ).length;
@@ -219,6 +246,84 @@ item.License?.Title === license
 
 
 
+private getLicenseUsed(
+license:string
+){
+
+return this.state.allocations.filter(
+
+item =>
+
+item.License?.Title === license
+
+).length;
+
+}
+
+
+
+private getLicenseAvailable(
+license:string
+){
+
+const item =
+this.state.licenseMaster.find(
+
+x=>x.Title===license
+
+);
+
+
+if(!item){
+
+return 0;
+
+}
+
+
+return (
+
+Number(item.TotalLicense)
+
+-
+
+this.getLicenseUsed(license)
+
+);
+
+}
+
+
+
+private getTotalPurchased(){
+
+return this.state.licenseMaster.reduce(
+
+(sum,item)=>
+
+sum + Number(item.TotalLicense || 0),
+
+0
+
+);
+
+}
+
+
+
+private getTotalAvailable(){
+
+return (
+
+this.getTotalPurchased()
+
+-
+
+this.state.allocations.length
+
+);
+
+}
 public render(){
 
 
@@ -247,7 +352,7 @@ return (
 <div>
 
 <h1>
-Client License Allocation 
+License Management
 </h1>
 
 <p>
@@ -302,15 +407,15 @@ onClick={this.props.onInventory}
 <div className={styles.card}>
 
 <span>
-Total Clients
+Total Purchased
 </span>
 
 <strong>
-{this.state.clients.length}
+{this.getTotalPurchased()}
 </strong>
 
 <small>
-Active Clients
+License Quantity
 </small>
 
 </div>
@@ -320,26 +425,7 @@ Active Clients
 <div className={styles.card}>
 
 <span>
-Total Licenses
-</span>
-
-<strong>
-{this.state.licenses.length}
-</strong>
-
-<small>
-License Types
-</small>
-
-</div>
-
-
-
-
-<div className={styles.card}>
-
-<span>
-Total Allocations
+Allocated
 </span>
 
 <strong>
@@ -347,33 +433,170 @@ Total Allocations
 </strong>
 
 <small>
-Active Allocations
+Active Allocation
 </small>
 
 </div>
-
 
 
 
 <div className={styles.card}>
 
 <span>
-Available Licenses
+Available
 </span>
 
 <strong>
--
+{this.getTotalAvailable()}
 </strong>
 
 <small>
-Not Allocated
+Remaining License
 </small>
 
 </div>
 
 
 
+<div className={styles.card}>
+
+<span>
+License Types
+</span>
+
+<strong>
+{this.state.licenseMaster.length}
+</strong>
+
+<small>
+Products
+</small>
+
 </div>
+
+
+</div>
+
+
+
+
+
+
+<div className={styles.licenseSummaryBox}>
+
+
+<h2>
+License Availability
+</h2>
+
+
+<p>
+Current license usage and remaining count
+</p>
+
+
+
+<table className={styles.summaryTable}>
+
+
+<thead>
+
+<tr>
+
+<th>
+License
+</th>
+
+<th>
+Total
+</th>
+
+<th>
+Used
+</th>
+
+<th>
+Available
+</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+{
+
+this.state.licenseMaster.map(
+
+license=>(
+
+
+<tr key={license.Id}>
+
+
+<td>
+{license.Title}
+</td>
+
+
+<td>
+
+<span className={styles.totalBadge}>
+{license.TotalLicense}
+</span>
+
+</td>
+
+
+<td>
+
+<span className={styles.usedBadge}>
+{
+this.getLicenseUsed(
+license.Title
+)
+}
+</span>
+
+</td>
+
+
+<td>
+
+<span className={styles.availableBadge}>
+{
+this.getLicenseAvailable(
+license.Title
+)
+}
+</span>
+
+</td>
+
+
+</tr>
+
+
+)
+
+)
+
+
+}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
 
 
 
@@ -385,27 +608,22 @@ Not Allocated
 
 <div className={styles.matrixHeader}>
 
+
 <div>
 
 <h2>
-License Allocation Matrix
+Client License Allocation Matrix
 </h2>
+
 
 <p>
 Client license allocation overview
 </p>
 
+
 </div>
 
 
-
-<input
-
-className={styles.search}
-
-placeholder="Search client..."
-
- />
 
 </div>
 
@@ -426,7 +644,9 @@ Client
 
 
 {
+
 this.state.licenses.map(
+
 license=>(
 
 <th key={license}>
@@ -436,6 +656,7 @@ license=>(
 )
 
 )
+
 }
 
 
@@ -452,12 +673,14 @@ Total
 
 
 
+
 <tbody>
 
 
-
 {
+
 this.state.clients.map(
+
 client=>(
 
 
@@ -485,9 +708,12 @@ this.props.onClientSelect(client);
 {
 
 this.state.licenses.map(
+
 license=>(
 
+
 <td key={license}>
+
 
 <span
 className={
@@ -499,6 +725,7 @@ styles.greyBadge
 }
 >
 
+
 {
 this.getCount(
 client,
@@ -506,32 +733,46 @@ license
 )
 }
 
+
 </span>
 
+
 </td>
+
 
 )
 
 )
 
 }
-
 
 
 
 <td>
 
-  <span className={styles.blueBadge}>
-    {this.getTotal(client)}
-  </span>
+
+<span className={styles.blueBadge}>
+
+{
+this.getTotal(client)
+}
+
+</span>
+
 
 </td>
 
+
+
 </tr>
 
+
 )
+
 )
+
 }
+
 
 
 <tr className={styles.summary}>
@@ -545,22 +786,28 @@ Total Summary
 {
 
 this.state.licenses.map(
+
 license=>(
+
 
 <td key={license}>
 
 {
-this.getLicenseTotal(license)
+this.getLicenseTotal(
+license
+)
 }
 
 </td>
 
+
 )
 
 )
 
 
 }
+
 
 
 <td>
@@ -575,12 +822,10 @@ this.state.allocations.length
 </tr>
 
 
-
 </tbody>
 
 
 </table>
-
 
 
 </div>
@@ -594,7 +839,5 @@ this.state.allocations.length
 
 
 }
-
-
 
 }

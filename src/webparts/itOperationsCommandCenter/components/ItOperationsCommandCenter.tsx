@@ -839,7 +839,9 @@ if (
       onNewAllocation={
         this._openNewLicenseAllocation
       }
-
+        onInventory={
+    this._openLicenseInventory
+  }
     />
 
   );

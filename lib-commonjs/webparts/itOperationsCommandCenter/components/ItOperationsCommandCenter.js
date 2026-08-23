@@ -468,7 +468,7 @@ var ItOperationsCommandCenter = /** @class */ (function (_super) {
                     spHttpClient: this.props.spHttpClient,
                     spHttpClientConfiguration: this.props.spHttpClientConfiguration,
                     webAbsoluteUrl: this.props.webAbsoluteUrl
-                }, onBack: this._backToDashboard, onClientSelect: this._openClientLicenses, onNewAllocation: this._openNewLicenseAllocation }));
+                }, onBack: this._backToDashboard, onClientSelect: this._openClientLicenses, onNewAllocation: this._openNewLicenseAllocation, onInventory: this._openLicenseInventory }));
         }
         if (this.state.view ===
             'clientLicenses'

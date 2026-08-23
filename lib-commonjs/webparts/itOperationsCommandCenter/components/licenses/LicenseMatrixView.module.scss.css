@@ -219,4 +219,82 @@ tbody tr:hover {
     overflow: auto;
   }
 }
+/* License Summary Table */
+.licenseSummaryBox {
+  margin-top: 30px;
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+.licenseSummaryBox h2 {
+  margin: 0;
+  color: #172554;
+  font-size: 22px;
+}
+
+.licenseSummaryBox p {
+  margin-top: 6px;
+  color: #64748b;
+}
+
+.summaryTable {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.summaryTable th {
+  background: #f1f5ff;
+  color: #172554;
+  padding: 18px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.summaryTable td {
+  padding: 18px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #334155;
+}
+
+.availableBadge {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.usedBadge {
+  background: #dbeafe;
+  color: #2563eb;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.totalBadge {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.downloadButton {
+  background: #16a34a;
+  color: white;
+  border: none;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.downloadButton:hover {
+  background: #15803d;
+}
 /*# sourceMappingURL=LicenseMatrixView.module.scss.css.map */
