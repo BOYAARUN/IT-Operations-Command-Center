@@ -6,3 +6,8 @@ sharepoint/
 *.log
 .vscode/
 .DS_Store
+# SPFx build files
+lib/
+temp/
+dist/
+release/assets/*.hot-update.*
